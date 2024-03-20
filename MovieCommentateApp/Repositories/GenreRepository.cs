@@ -1,6 +1,8 @@
-﻿namespace MovieReviewApp.Repositories
+﻿using MovieReviewApp.Interfaces;
+
+namespace MovieReviewApp.Repositories
 {
-    public class GenreRepository
+    public class GenreRepository:IGenreRepository
     {
     }
 }

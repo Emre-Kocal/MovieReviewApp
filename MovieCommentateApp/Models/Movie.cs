@@ -8,7 +8,7 @@
         public int Year { get; set; } 
         public List<ActorMovie> Actors { get; set; } = new List<ActorMovie>();
         public string PosterImage { get; set; } = string.Empty;
-        public int CategoryId { get; set; }
-        public Genre Category { get; set; }
+        public int GenreId { get; set; }
+        public Genre Genre { get; set; }
     }
 }

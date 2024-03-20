@@ -1,6 +1,8 @@
-﻿namespace MovieReviewApp.Repositories
+﻿using MovieReviewApp.Interfaces;
+
+namespace MovieReviewApp.Repositories
 {
-    public class CommentRepository
+    public class CommentRepository:ICommentRepository
     {
     }
 }

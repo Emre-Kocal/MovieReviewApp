@@ -1,6 +1,6 @@
 ﻿namespace MovieReviewApp.Interfaces
 {
-    public class IGenreRepository
+    public interface IGenreRepository
     {
     }
 }

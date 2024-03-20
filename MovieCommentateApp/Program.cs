@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using MovieReviewApp.Data;
+using MovieReviewApp.Interfaces;
+using MovieReviewApp.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +11,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
-
+builder.Services.AddScoped<IMovieRepository,MovieRepository>();
+builder.Services.AddScoped<IGenreRepository,GenreRepository>();
+builder.Services.AddScoped<ICommentRepository,CommentRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
