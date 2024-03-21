@@ -10,7 +10,7 @@ namespace MovieReviewApp.Data
         public ApplicationDbContext(DbContextOptions dbContextOptions)
         : base(dbContextOptions) { }
         public DbSet<Actor> Actors { get; set; }
-        public DbSet<Genre> Categories { get; set; }
+        public DbSet<Genre> Genres { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<ActorMovie> ActorMovies { get; set; }

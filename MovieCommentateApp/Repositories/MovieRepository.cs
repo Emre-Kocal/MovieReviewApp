@@ -18,7 +18,7 @@ namespace MovieReviewApp.Repositories
 
         public async Task<Movie> CreateAsync(CreateMovieDto createMovieDto)
         {
-            var model=createMovieDto.ToMovieFromCreateDto();
+            var model=createMovieDto.CreateDtoToMovie();
             await _context.AddAsync(model);
             await _context.SaveChangesAsync();
             return model;
@@ -51,6 +51,19 @@ namespace MovieReviewApp.Repositories
             if (model == null)
                 return null;
             return model;
+        }
+
+        public async Task<MovieAllDto?> GetByIdWithAllAsync(int id)
+        {
+            var model = await _context.Movies
+                .Include(x => x.Genre)
+                .Include(x => x.Actors)
+                .ThenInclude(x=>x.Actor)
+                .FirstOrDefaultAsync(x=>x.Id==id);
+            if (model == null)
+                return null;
+            var modeldto = model.MovieToMovieAllDto();
+            return modeldto;
         }
 
         public async Task<Movie?> UpdateAsync(int id, UpdateMovieDto updateMovieDto)

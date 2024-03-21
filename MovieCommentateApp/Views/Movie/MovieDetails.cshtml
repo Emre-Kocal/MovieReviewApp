@@ -1,0 +1,49 @@
+﻿@using MovieReviewApp.Dtos.Movie
+@model MovieAllDto
+@{
+    ViewData["Title"] = "MovieDetails";
+    Layout = "~/Views/Shared/UserLayout.cshtml";
+}
+
+<h1>MovieDetails</h1>
+<div>
+    <div>
+        @if (Model.PosterImage == string.Empty)
+        {
+            <img src="~/img/nophoto.png" />
+        }
+        else
+        {
+            <img src="~/img/@Model.PosterImage" />
+        }
+    </div>
+    <div>
+        <h5>@Model.Name</h5>
+        <table>
+            <tr>
+                <th>Genre</th>
+                <td>@Model.Genre.Name</td>
+            </tr>
+            <tr>
+                <th>Year</th>
+                <td>@Model.Year</td>
+            </tr>
+            <tr>
+                <th>Actors</th>
+                <td>
+                    <ul>
+                        @foreach (var actor in Model.Actors)
+                        {
+                            <li><a href="#">@actor.Actor.FullName</a></li>
+                        }
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>@Model.Description</td>
+            </tr>
+        </table>
+    </div>
+</div>
+

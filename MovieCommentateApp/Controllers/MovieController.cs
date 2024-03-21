@@ -17,5 +17,14 @@ namespace MovieReviewApp.Controllers
             var list=await _movieRepo.GetAllAsync();
             return View(list);
         }
+        public async Task<IActionResult> MovieDetails(int id)
+        {
+            var movie = await _movieRepo.GetByIdWithAllAsync(id);
+            if (movie==null)
+            {
+                //return Error
+            }
+            return View(movie);
+        }
     }
 }
