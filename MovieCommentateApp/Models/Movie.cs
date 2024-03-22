@@ -10,5 +10,6 @@
         public string PosterImage { get; set; } = string.Empty;
         public int GenreId { get; set; }
         public Genre Genre { get; set; }
+        public List<Comment> Comments { get; set; }
     }
 }

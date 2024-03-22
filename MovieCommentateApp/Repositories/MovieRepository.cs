@@ -59,6 +59,7 @@ namespace MovieReviewApp.Repositories
                 .Include(x => x.Genre)
                 .Include(x => x.Actors)
                 .ThenInclude(x=>x.Actor)
+                .Include(x=>x.Comments)
                 .FirstOrDefaultAsync(x=>x.Id==id);
             if (model == null)
                 return null;

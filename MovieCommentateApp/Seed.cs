@@ -13,7 +13,7 @@ namespace MovieReviewApp
         }
         public void SeedDataContext()
         {
-            if (_context.Movies.Any())
+            if (_context.Movies.Any(x=>x.Id>0))
                 return;
             var genres = new List<Genre>
                 {
@@ -48,18 +48,19 @@ namespace MovieReviewApp
             _context.SaveChanges();
 
             var movies = new List<Movie>
-                {
-                    new Movie { Name = "The Dark Knight", Year = 2008, GenreId = genres.Single(g => g.Name == "Action").Id},
-                    new Movie { Name = "Inception", Year = 2010, GenreId = genres.Single(g => g.Name == "Sci-Fi").Id},
-                    new Movie { Name = "Pulp Fiction", Year = 1994, GenreId = genres.Single(g => g.Name == "Drama").Id },
-                    new Movie { Name = "The Lord of the Rings: The Fellowship of the Ring", Year = 2001, GenreId = genres.Single(g => g.Name == "Fantasy").Id },
-                    new Movie { Name = "The Shawshank Redemption", Year = 1994, GenreId = genres.Single(g => g.Name == "Drama").Id },
-                    new Movie { Name = "Forrest Gump", Year = 1994, GenreId = genres.Single(g => g.Name == "Drama").Id },
-                    new Movie { Name = "The Matrix", Year = 1999, GenreId = genres.Single(g => g.Name == "Sci-Fi").Id },
-                    new Movie { Name = "Fight Club", Year = 1999, GenreId = genres.Single(g => g.Name == "Drama").Id },
-                    new Movie { Name = "Gladiator", Year = 2000, GenreId = genres.Single(g => g.Name == "Action").Id },
-                    new Movie { Name = "The Godfather", Year = 1972, GenreId = genres.Single(g => g.Name == "Action").Id }
-                };
+            {
+                new Movie { Name = "The Dark Knight", Year = 2008, GenreId = genres.Single(g => g.Name == "Action").Id, Description = "A film depicting the adventures of Batman, the dark guardian of Gotham City."},
+                new Movie { Name = "Inception", Year = 2010, GenreId = genres.Single(g => g.Name == "Sci-Fi").Id, Description = "A science fiction movie about a heist operation using dream-sharing technology."},
+                new Movie { Name = "Pulp Fiction", Year = 1994, GenreId = genres.Single(g => g.Name == "Drama").Id, Description = "A Quentin Tarantino film with intersecting stories of various characters."},
+                new Movie { Name = "The Lord of the Rings: The Fellowship of the Ring", Year = 2001, GenreId = genres.Single(g => g.Name == "Fantasy").Id, Description = "An epic fantasy film depicting the formation and journey of the Fellowship of the Ring in Middle-earth."},
+                new Movie { Name = "The Shawshank Redemption", Year = 1994, GenreId = genres.Single(g => g.Name == "Drama").Id, Description = "A powerful drama about Andy Dufresne's life in Shawshank prison after being wrongly convicted."},
+                new Movie { Name = "Forrest Gump", Year = 1994, GenreId = genres.Single(g => g.Name == "Drama").Id, Description = "A drama film depicting the extraordinary life experiences of Forrest Gump, who has an intellectual disability."},
+                new Movie { Name = "The Matrix", Year = 1999, GenreId = genres.Single(g => g.Name == "Sci-Fi").Id, Description = "An iconic science fiction film questioning the nature of reality and depicting humanity's fight against machines."},
+                new Movie { Name = "Fight Club", Year = 1999, GenreId = genres.Single(g => g.Name == "Drama").Id, Description = "A film starting with an unnamed character joining a secret boxing club called Fight Club, criticizing modern consumer culture."},
+                new Movie { Name = "Gladiator", Year = 2000, GenreId = genres.Single(g => g.Name == "Action").Id, Description = "An action-packed historical film about the betrayal and revenge of the legendary Roman general Maximus."},
+                new Movie { Name = "The Godfather", Year = 1972, GenreId = genres.Single(g => g.Name == "Action").Id, Description = "An unforgettable crime drama depicting the Corleone family's underworld story from Sicily to America."},
+            };
+
             _context.Movies.AddRange(movies);
             _context.SaveChanges();
 
@@ -72,6 +73,24 @@ namespace MovieReviewApp
                     new Comment { MovieId = movies.Single(m => m.Name == "The Godfather").Id, Text = "Classic masterpiece.", Rating = 5 }
                 };
             _context.Comments.AddRange(comments);
+            _context.SaveChanges();
+
+            Random rnd = new Random();
+            var actorMovies = new List<ActorMovie>();
+            for (int i = 0; i < 10; i++)
+            {
+                var numbers = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+                var j = rnd.Next(1, 5);
+                for (int k = 0; k < j; k++)
+                {
+                    var randomNumber = numbers[rnd.Next(0, numbers.Count)];
+                    var actorMovie = new ActorMovie { MovieId = movies.Single(m => m.Name == movies[i].Name).Id, ActorId = actors.Single(a => a.FullName == actors[randomNumber].FullName).Id };
+
+                    numbers.Remove(randomNumber);
+                    actorMovies.Add(actorMovie);
+                }
+            }
+            _context.ActorMovies.AddRange(actorMovies);
             _context.SaveChanges();
         }
     }

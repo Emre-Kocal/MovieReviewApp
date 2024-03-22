@@ -6,44 +6,53 @@
 }
 
 <h1>MovieDetails</h1>
-<div>
-    <div>
-        @if (Model.PosterImage == string.Empty)
-        {
-            <img src="~/img/nophoto.png" />
-        }
-        else
-        {
-            <img src="~/img/@Model.PosterImage" />
-        }
+<div class="row">
+    <div class="movie-details col-md-4">
+        <div class="w-100">
+            @if (Model.PosterImage == string.Empty)
+            {
+                <img style="width:100%" src="~/img/nophoto.png" />
+            }
+            else
+            {
+                <img style="width:100%" src="~/img/@Model.PosterImage" />
+            }
+        </div>
+        <div>
+            <h5>@Model.Name</h5>
+            <table class="table table-bordered">
+                <tr>
+                    <th>Genre</th>
+                    <td>@Model.Genre.Name</td>
+                </tr>
+                <tr>
+                    <th>Year</th>
+                    <td>@Model.Year</td>
+                </tr>
+                <tr>
+                    <th>Actors</th>
+                    <td>
+                        <ul>
+                            @foreach (var actor in Model.Actors)
+                            {
+                                <li><a href="#">@actor.Actor.FullName</a></li>
+                            }
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>@Model.Description</td>
+                </tr>
+            </table>
+        </div>
     </div>
-    <div>
-        <h5>@Model.Name</h5>
-        <table>
-            <tr>
-                <th>Genre</th>
-                <td>@Model.Genre.Name</td>
-            </tr>
-            <tr>
-                <th>Year</th>
-                <td>@Model.Year</td>
-            </tr>
-            <tr>
-                <th>Actors</th>
-                <td>
-                    <ul>
-                        @foreach (var actor in Model.Actors)
-                        {
-                            <li><a href="#">@actor.Actor.FullName</a></li>
-                        }
-                    </ul>
-                </td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>@Model.Description</td>
-            </tr>
-        </table>
+    <div class="comment-list col-md-8">
+        <ul>
+            @foreach (var comment in Model.Comments)
+            {
+                <li>@comment.Text @comment.Rating</li>
+            }
+        </ul>
     </div>
 </div>
-

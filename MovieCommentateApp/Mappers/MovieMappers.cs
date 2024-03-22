@@ -37,7 +37,8 @@ namespace MovieReviewApp.Mappers
                 Year = model.Year,
                 Actors = model.Actors,
                 GenreId = model.GenreId,
-                Genre = model.Genre
+                Genre = model.Genre,
+                Comments = model.Comments
             };
         }
     }

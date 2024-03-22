@@ -9,7 +9,14 @@
     {
         <div class="col-md-4 mb-4 movie-card">
             <div class="card">
-                <img src="https://picsum.photos/200/300" class="card-img-top">
+                @if (movie.PosterImage==string.Empty)
+                {
+                    <img src="~/img/nophoto.png" class="card-img-top">
+                }
+                else
+                {
+                    <img src="~/img/Movie/@movie.PosterImage" class="card-img-top">
+                }
                 <div class="card-body">
                     <a asp-controller="Movie" asp-action="MovieDetails" asp-route-id="@movie.Id">
                         <h5 class="card-title">@movie.Name</h5>
