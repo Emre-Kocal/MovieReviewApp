@@ -3,26 +3,85 @@
 @{
     Layout = "~/Views/Shared/UserLayout.cshtml";
 }
-<h1 class="text-center p-5">Movies</h1>
-<div class="row card-container">
-    @foreach (var movie in Model)
-    {
-        <div class="col-md-4 mb-4 movie-card">
-            <div class="card">
-                @if (movie.PosterImage==string.Empty)
-                {
-                    <img src="~/img/nophoto.png" class="card-img-top">
-                }
-                else
-                {
-                    <img src="~/img/Movie/@movie.PosterImage" class="card-img-top">
-                }
-                <div class="card-body">
-                    <a asp-controller="Movie" asp-action="MovieDetails" asp-route-id="@movie.Id">
-                        <h5 class="card-title">@movie.Name</h5>
-                    </a>
-                </div>
+<div class="row my-4">
+    <div class="col-md-6 offset-md-3">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Movie List Filter</h5>
+            </div>
+            <div class="card-body">
+                <form method="post" asp-controller="Movie" asp-action="Movies">
+                    <div class="row mb-3">
+                        <div class="form-group col-md-4">
+                            <label for="genreId">Genre ID</label>
+                            <select class="form-control" id="genreId" name="GenreId">
+                                <option value="0">All Genres</option>
+                                @foreach (Genre genre in ViewBag.Genres)
+                                {
+                                    <option value="@genre.Id">@genre.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="year">Year</label>
+                            <input type="number" class="form-control" id="year" name="Year">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="name">Movie Name</label>
+                            <input type="text" class="form-control" id="name" name="Name">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Apply Filter</button>
+                </form>
             </div>
         </div>
-    }
+    </div>
 </div>
+@if (Model.Count==0)
+{
+    <h5 class="text-center">There is no movie by these filters</h5>
+}
+else
+{
+    <div class="row card-container">
+        @foreach (var movie in Model)
+        {
+            <div class="col-md-4 mb-4 movie-card">
+                <div class="card">
+                    @if (movie.PosterImage == string.Empty)
+                    {
+                        <img src="~/img/nophoto.png" class="card-img-top">
+                    }
+                    else
+                    {
+                        <img src="~/img/Movie/@movie.PosterImage" class="card-img-top">
+                    }
+                    <div class="card-body">
+                        <a asp-controller="Movie" asp-action="MovieDetails" asp-route-id="@movie.Id">
+                            <h5 class="card-title">@movie.Name</h5>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <nav aria-label="Sayfa gezintisi örneği">
+        <ul class="pagination">
+            <!-- Sayfa önceki butonu -->
+            <li class="page-item">
+                <a class="page-link" href="#">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+}

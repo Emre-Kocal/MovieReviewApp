@@ -12,8 +12,8 @@ using MovieReviewApp.Data;
 namespace MovieReviewApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240322103300_creating_db_andseed")]
-    partial class creating_db_andseed
+    [Migration("20240326173433_new_database")]
+    partial class new_database
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -281,6 +281,9 @@ namespace MovieReviewApp.Migrations
                     b.Property<string>("AppUserId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("MovieId")
                         .HasColumnType("int");
 
@@ -430,7 +433,7 @@ namespace MovieReviewApp.Migrations
                         .HasForeignKey("AppUserId");
 
                     b.HasOne("MovieReviewApp.Models.Movie", "Movie")
-                        .WithMany()
+                        .WithMany("Comments")
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -464,6 +467,8 @@ namespace MovieReviewApp.Migrations
             modelBuilder.Entity("MovieReviewApp.Models.Movie", b =>
                 {
                     b.Navigation("Actors");
+
+                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }

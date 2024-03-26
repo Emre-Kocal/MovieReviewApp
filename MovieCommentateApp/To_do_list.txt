@@ -1,3 +1,2 @@
 pagination for Movies.cshtml
 filtering for Movies.cshtml
-comment design

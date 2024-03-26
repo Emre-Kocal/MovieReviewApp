@@ -6,7 +6,7 @@ namespace MovieReviewApp.Interfaces
     public interface IMovieRepository
     {
         public Task<List<Movie>> GetAllAsync();
-        public Task<List<Movie>> GetAllAsync(FilterMovieDto filterMovieDto);
+        public Task<List<Movie>> GetAllAsync(QueryMovieDto query);
         public Task<Movie?> GetByIdAsync(int id);
         public Task<MovieAllDto?> GetByIdWithAllAsync(int id);
         public Task<Movie> CreateAsync(CreateMovieDto createMovieDto);

@@ -278,6 +278,9 @@ namespace MovieReviewApp.Migrations
                     b.Property<string>("AppUserId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("MovieId")
                         .HasColumnType("int");
 
@@ -427,7 +430,7 @@ namespace MovieReviewApp.Migrations
                         .HasForeignKey("AppUserId");
 
                     b.HasOne("MovieReviewApp.Models.Movie", "Movie")
-                        .WithMany()
+                        .WithMany("Comments")
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -461,6 +464,8 @@ namespace MovieReviewApp.Migrations
             modelBuilder.Entity("MovieReviewApp.Models.Movie", b =>
                 {
                     b.Navigation("Actors");
+
+                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }

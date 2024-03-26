@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using MovieReviewApp.Data;
 using MovieReviewApp.Dtos.Movie;
 using MovieReviewApp.Interfaces;
@@ -18,7 +19,7 @@ namespace MovieReviewApp.Repositories
 
         public async Task<Movie> CreateAsync(CreateMovieDto createMovieDto)
         {
-            var model=createMovieDto.CreateDtoToMovie();
+            var model = createMovieDto.CreateDtoToMovie();
             await _context.AddAsync(model);
             await _context.SaveChangesAsync();
             return model;
@@ -27,16 +28,28 @@ namespace MovieReviewApp.Repositories
         public async Task<Movie?> DeleteAsync(int id)
         {
             var model = await GetByIdAsync(id);
-            if (model==null)
+            if (model == null)
                 return null;
             _context.Remove(model);
             return model;
         }
 
-        public async Task<List<Movie>> GetAllAsync(FilterMovieDto filterMovieDto)
+        public async Task<List<Movie>> GetAllAsync(QueryMovieDto query)
         {
             var list = _context.Movies.AsQueryable();
 
+            if (!query.Name.IsNullOrEmpty())
+                list = list.Where(x => x.Name.ToLower().Contains(query.Name.ToLower()));
+
+            if (query.Year != 0)
+                list = list.Where(x => x.Year == query.Year);
+
+            if (query.GenreId != 0)
+                list = list.Where(x => x.GenreId == query.GenreId);
+
+            list = list
+                .Skip((query.PageNumber - 1) * query.PageSize)
+                .Take(query.PageSize);
             return await list.ToListAsync();
         }
 
@@ -47,9 +60,7 @@ namespace MovieReviewApp.Repositories
 
         public async Task<Movie?> GetByIdAsync(int id)
         {
-            var model=await _context.Movies.FindAsync(id);
-            if (model == null)
-                return null;
+            var model = await _context.Movies.FindAsync(id);
             return model;
         }
 
@@ -58,9 +69,10 @@ namespace MovieReviewApp.Repositories
             var model = await _context.Movies
                 .Include(x => x.Genre)
                 .Include(x => x.Actors)
-                .ThenInclude(x=>x.Actor)
-                .Include(x=>x.Comments)
-                .FirstOrDefaultAsync(x=>x.Id==id);
+                .ThenInclude(x => x.Actor)
+                .Include(x => x.Comments)
+                .ThenInclude(x => x.AppUser)
+                .FirstOrDefaultAsync(x => x.Id == id);
             if (model == null)
                 return null;
             var modeldto = model.MovieToMovieAllDto();
@@ -70,13 +82,13 @@ namespace MovieReviewApp.Repositories
         public async Task<Movie?> UpdateAsync(int id, UpdateMovieDto updateMovieDto)
         {
             var model = await _context.Movies.FindAsync(id);
-            if (model==null)
-                    return null;
-            model.Name=updateMovieDto.Name;
-            model.Description=updateMovieDto.Description;
-            model.Year=updateMovieDto.Year;
-            model.PosterImage=updateMovieDto.PosterImage;
-            model.GenreId=updateMovieDto.GenreId;
+            if (model == null)
+                return null;
+            model.Name = updateMovieDto.Name;
+            model.Description = updateMovieDto.Description;
+            model.Year = updateMovieDto.Year;
+            model.PosterImage = updateMovieDto.PosterImage;
+            model.GenreId = updateMovieDto.GenreId;
 
             await _context.SaveChangesAsync();
             return model;
