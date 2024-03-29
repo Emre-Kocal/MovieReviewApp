@@ -18,8 +18,8 @@ namespace MovieReviewApp.Controllers
         public async Task<IActionResult> Movies(QueryMovieDto query)
         {
             ViewBag.Genres = await _genreRepo.GetAllAsync();
-            ViewBag.LastQuery=query;
             var list=await _movieRepo.GetAllAsync(query);
+            ViewBag.LastQuery = query;
             return View(list);
         }
         public async Task<IActionResult> MovieDetails(int id)

@@ -21,8 +21,7 @@ namespace MovieReviewApp.Repositories
 
         public async Task<Genre?> GetByIdAsync(int id)
         {
-            var model=await _context.Genres.FindAsync(id);
-            return model;
+            return await _context.Genres.FindAsync(id);
         }
     }
 }

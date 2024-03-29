@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MovieReviewApp.Migrations
 {
     /// <inheritdoc />
-    public partial class new_database : Migration
+    public partial class Models_and_Seed : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

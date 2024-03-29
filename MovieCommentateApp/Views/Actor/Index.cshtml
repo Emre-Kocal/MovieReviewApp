@@ -1,0 +1,48 @@
+﻿@using MovieReviewApp.Models
+@model Actor
+@{
+    Layout = "~/Views/Shared/UserLayout.cshtml";
+}
+
+<div class="d-flex justify-content-center">
+    <div class="movie-details col-md-4">
+        <div class="w-100">
+            @if (Model.Image == string.Empty)
+            {
+                <img style="width:100%" src="~/img/nophoto.png" />
+            }
+            else
+            {
+                <img style="width:100%" src="~/img/Actor/@Model.Image" />
+            }
+        </div>
+        <div>
+            <h5>@Model.FullName</h5>
+            <table class="table table-bordered">
+                <tr>
+                    <th>Nationality</th>
+                    <td>@Model.Nationality</td>
+                </tr>
+                <tr>
+                    <th>Birth Date</th>
+                    <td>@Model.BirthDate.ToString("MM/dd/yyyy")</td>
+                </tr>
+                <tr>
+                    <th>Biography</th>
+                    <td>@Model.Bio</td>
+                </tr>
+                <tr>
+                    <th>Movies</th>
+                    <td>
+                        <ul>
+                            @foreach (var movie in Model.Movies)
+                            {
+                                <li><a asp-controller="Movie" asp-action="MovieDetails" asp-route-id="@movie.Movie.Id">@movie.Movie.Name</a></li>
+                            }
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

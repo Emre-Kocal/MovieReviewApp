@@ -47,9 +47,12 @@ namespace MovieReviewApp.Repositories
             if (query.GenreId != 0)
                 list = list.Where(x => x.GenreId == query.GenreId);
 
-            list = list
-                .Skip((query.PageNumber - 1) * query.PageSize)
-                .Take(query.PageSize);
+            if (list.Count()>=query.PageSize*(query.PageNumber-1))
+            {
+                list = list
+                    .Skip((query.PageNumber - 1) * query.PageSize)
+                    .Take(query.PageSize);
+            }
             return await list.ToListAsync();
         }
 

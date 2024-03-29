@@ -14,21 +14,37 @@
                     <div class="row mb-3">
                         <div class="form-group col-md-4">
                             <label for="genreId">Genre ID</label>
-                            <select class="form-control" id="genreId" name="GenreId">
+                            <select class="form-control" name="GenreId">
                                 <option value="0">All Genres</option>
                                 @foreach (Genre genre in ViewBag.Genres)
                                 {
-                                    <option value="@genre.Id">@genre.Name</option>
+                                    if (genre.Id==ViewBag.LastQuery.GenreId)
+                                    {
+                                        <option value="@genre.Id" selected>@genre.Name</option>
+                                    }else
+                                    {
+                                        <option value="@genre.Id">@genre.Name</option>
+                                    }
                                 }
                             </select>
                         </div>
                         <div class="form-group col-md-4">
                             <label for="year">Year</label>
-                            <input type="number" class="form-control" id="year" name="Year">
+                            <input value="@ViewBag.LastQuery.Year" type="number" class="form-control" name="Year">
                         </div>
                         <div class="form-group col-md-4">
                             <label for="name">Movie Name</label>
-                            <input type="text" class="form-control" id="name" name="Name">
+                            <input value="@ViewBag.LastQuery.Name" type="text" class="form-control" name="Name">
+                        </div>
+                    </div>
+                    <div class="row mb-3 justify-content-center">
+                        <div class="form-group col-md-4">
+                            <label for="year">Page Number</label>
+                            <input value="@ViewBag.LastQuery.PageNumber" type="number" class="form-control" name="PageNumber">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="name">Page Size</label>
+                            <input value="@ViewBag.LastQuery.PageSize" type="text" class="form-control" name="PageSize">
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary">Apply Filter</button>
@@ -37,7 +53,7 @@
         </div>
     </div>
 </div>
-@if (Model.Count==0)
+@if (Model.Count == 0)
 {
     <h5 class="text-center">There is no movie by these filters</h5>
 }
@@ -65,23 +81,4 @@ else
             </div>
         }
     </div>
-
-    <nav aria-label="Sayfa gezintisi örneği">
-        <ul class="pagination">
-            <!-- Sayfa önceki butonu -->
-            <li class="page-item">
-                <a class="page-link" href="#">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-                <a class="page-link" href="#">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
 }

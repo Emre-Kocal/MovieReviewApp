@@ -12,8 +12,8 @@ using MovieReviewApp.Data;
 namespace MovieReviewApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240326173433_new_database")]
-    partial class new_database
+    [Migration("20240328231746_Models_and_Seed")]
+    partial class Models_and_Seed
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

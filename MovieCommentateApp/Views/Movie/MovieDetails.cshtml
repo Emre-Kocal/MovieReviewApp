@@ -14,7 +14,7 @@
             }
             else
             {
-                <img style="width:100%" src="~/img/@Model.PosterImage" />
+                <img style="width:100%" src="~/img/Movie/@Model.PosterImage" />
             }
         </div>
         <div>
@@ -34,7 +34,7 @@
                         <ul>
                             @foreach (var actor in Model.Actors)
                             {
-                                <li><a href="#">@actor.Actor.FullName</a></li>
+                                <li><a asp-controller="Actor" asp-action="Index" asp-route-id="@actor.Actor.Id">@actor.Actor.FullName</a></li>
                             }
                         </ul>
                     </td>
