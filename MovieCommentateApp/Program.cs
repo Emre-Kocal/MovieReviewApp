@@ -1,7 +1,11 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using MovieReviewApp;
 using MovieReviewApp.Data;
 using MovieReviewApp.Interfaces;
+using MovieReviewApp.Models;
 using MovieReviewApp.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +18,15 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
+builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
+{
+    options.Password.RequireDigit= true;
+    options.Password.RequireUppercase= true;
+    options.Password.RequireLowercase= true;
+    options.Password.RequireNonAlphanumeric= false;
+    options.Password.RequiredLength = 8;
+}).AddEntityFrameworkStores<ApplicationDbContext>();
+
 builder.Services.AddScoped<IMovieRepository,MovieRepository>();
 builder.Services.AddScoped<IGenreRepository,GenreRepository>();
 builder.Services.AddScoped<ICommentRepository,CommentRepository>();
@@ -23,14 +36,14 @@ var app = builder.Build();
 
 SeedData(app);
 
-void SeedData(IHost app)
+async void SeedData(IHost app)
 {
     var scopedFactory = app.Services.GetService<IServiceScopeFactory>();
 
     using (var scope = scopedFactory.CreateScope())
     {
         var service = scope.ServiceProvider.GetService<Seed>();
-        service.SeedDataContext();
+        await service.SeedDataContext();
     }
 }
 
@@ -43,6 +56,10 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.UseStaticFiles();
 
 app.UseRouting();
@@ -51,6 +68,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Movie}/{action=Movies}");
+    pattern: "{controller=Account}/{action=Register}");
 
 app.Run();

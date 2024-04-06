@@ -1,11 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace MovieReviewApp.Models
+﻿namespace MovieReviewApp.Models
 {
     public class Actor
     {
         public int Id { get; set; }
-        [Required]
         public string FullName { get; set; } = string.Empty;
         public string Image { get; set; } = string.Empty;
         public DateTime BirthDate { get; set; }

@@ -1,20 +1,24 @@
-﻿using MovieReviewApp.Data;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
+using MovieReviewApp.Data;
 using MovieReviewApp.Models;
-using System.Diagnostics.Metrics;
 
 namespace MovieReviewApp
 {
     public class Seed
     {
         private readonly ApplicationDbContext _context;
+
         public Seed(ApplicationDbContext context)
         {
             _context = context;
         }
-        public void SeedDataContext()
+
+        public async Task SeedDataContext()
         {
             if (_context.Movies.Any(x => x.Id > 0))
                 return;
+
             var genres = new List<Genre>
                 {
                     new Genre { Name = "Action" },
@@ -75,31 +79,31 @@ namespace MovieReviewApp
 
             var comments = new List<Comment>
                 {
-                    new Comment { MovieId = movies.Single(m => m.Name == "Interstellar").Id, Text = "Amazing visuals and emotional depth.", Rating = 5, Date = DateTime.Parse("2024-01-15") },
-                    new Comment { MovieId = movies.Single(m => m.Name == "Interstellar").Id, Text = "A masterpiece of science fiction cinema.", Rating = 5, Date = DateTime.Parse("2024-02-05") },
-                    new Comment { MovieId = movies.Single(m => m.Name == "The Social Network").Id, Text = "Captivating portrayal of tech industry dynamics.", Rating = 4, Date = DateTime.Parse("2024-02-18") },
-                    new Comment { MovieId = movies.Single(m => m.Name == "The King's Speech").Id, Text = "Exceptional performances and historical accuracy.", Rating = 4, Date = DateTime.Parse("2024-01-30") },
-                    new Comment { MovieId = movies.Single(m => m.Name == "The King's Speech").Id, Text = "A must-watch for history buffs.", Rating = 4, Date = DateTime.Parse("2024-02-22") },
-                    new Comment { MovieId = movies.Single(m => m.Name == "The King's Speech").Id, Text = "Inspirational story of overcoming challenges.", Rating = 5, Date = DateTime.Parse("2024-03-10") },
-                    new Comment { MovieId = movies.Single(m => m.Name == "The Artist").Id, Text = "Unique and charming tribute to silent cinema.", Rating = 4, Date = DateTime.Parse("2024-01-05") },
-                    new Comment { MovieId = movies.Single(m => m.Name == "The Artist").Id, Text = "Creative storytelling through visuals and music.", Rating = 5, Date = DateTime.Parse("2024-02-17") },
-                    new Comment { MovieId = movies.Single(m => m.Name == "The Artist").Id, Text = "A delightful cinematic experience.", Rating = 4, Date = DateTime.Parse("2024-03-01") },
-                    new Comment { MovieId = movies.Single(m => m.Name == "Birdman").Id, Text = "Intriguing exploration of fame and identity.", Rating = 4, Date = DateTime.Parse("2024-02-08") },
-                    new Comment { MovieId = movies.Single(m => m.Name == "The Revenant").Id, Text = "Visually stunning with a gripping narrative.", Rating = 5, Date = DateTime.Parse("2024-02-12") },
-                    new Comment { MovieId = movies.Single(m => m.Name == "The Revenant").Id, Text = "Leonardo DiCaprio's performance is exceptional.", Rating = 5, Date = DateTime.Parse("2024-03-05") },
-                    new Comment { MovieId = movies.Single(m => m.Name == "The Revenant").Id, Text = "Intense and immersive storytelling.", Rating = 4, Date = DateTime.Parse("2024-03-18") },
-                    new Comment { MovieId = movies.Single(m => m.Name == "Black Swan").Id, Text = "Natalie Portman's acting is captivating.", Rating = 5, Date = DateTime.Parse("2024-01-25") },
-                    new Comment { MovieId = movies.Single(m => m.Name == "Black Swan").Id, Text = "A dark and mesmerizing psychological thriller.", Rating = 4, Date = DateTime.Parse("2024-02-28") },
-                    new Comment { MovieId = movies.Single(m => m.Name == "Inglourious Basterds").Id, Text = "Tarantino's signature style shines through.", Rating = 5, Date = DateTime.Parse("2024-01-10") },
-                    new Comment { MovieId = movies.Single(m => m.Name == "Inglourious Basterds").Id, Text = "Brad Pitt delivers a standout performance.", Rating = 4, Date = DateTime.Parse("2024-02-14") },
-                    new Comment { MovieId = movies.Single(m => m.Name == "Inglourious Basterds").Id, Text = "A thrilling alternate history war film.", Rating = 4, Date = DateTime.Parse("2024-03-08") },
-                    new Comment { MovieId = movies.Single(m => m.Name == "The Prestige").Id, Text = "Mind-bending twists and turns.", Rating = 5, Date = DateTime.Parse("2024-02-01") },
-                    new Comment { MovieId = movies.Single(m => m.Name == "The Prestige").Id, Text = "Hugh Jackman and Christian Bale are outstanding.", Rating = 5, Date = DateTime.Parse("2024-03-15") },
-                    new Comment { MovieId = movies.Single(m => m.Name == "The Matrix").Id, Text = "Bad", Rating = 1,Date=DateTime.Parse("2023-12-21") },
-                    new Comment { MovieId = movies.Single(m => m.Name == "The Matrix").Id, Text = "Great movie!", Rating = 4,Date=DateTime.Parse("2024-01-02") },
-                    new Comment { MovieId = movies.Single(m => m.Name == "The Matrix").Id, Text = "One of my all-time favorites.", Rating = 5,Date=DateTime.Parse("2024-02-11") },
-                    new Comment { MovieId = movies.Single(m => m.Name == "The Godfather").Id, Text = "Mind-bending storyline.", Rating = 4,Date=DateTime.Parse("2024-02-21") },
-                    new Comment { MovieId = movies.Single(m => m.Name == "The Godfather").Id, Text = "Classic masterpiece.", Rating = 5,Date=DateTime.Parse("2024-03-02") }
+                    new Comment { MovieId = movies.Single(m => m.Name == "Interstellar").Id, Text = "Amazing visuals and emotional depth.", Rating = 5, Date = DateTime.Parse("2024-01-15") ,UserId= "8a445865-a24d-4543-a6c3-9443d048cdb9"},
+                    new Comment { MovieId = movies.Single(m => m.Name == "Interstellar").Id, Text = "A masterpiece of science fiction cinema.", Rating = 5, Date = DateTime.Parse("2024-02-05") ,UserId= "8a445865-a24d-4543-4123-9443d048cdb9"},
+                    new Comment { MovieId = movies.Single(m => m.Name == "The Social Network").Id, Text = "Captivating portrayal of tech industry dynamics.", Rating = 4, Date = DateTime.Parse("2024-02-18") ,UserId= "8a445865-a24d-4543-a6c3-9443d048cdb9"},
+                    new Comment { MovieId = movies.Single(m => m.Name == "The King's Speech").Id, Text = "Exceptional performances and historical accuracy.", Rating = 4, Date = DateTime.Parse("2024-01-30") , UserId= "8a445865-a24d-4543-4123-9443d048cdb9"},
+                    new Comment { MovieId = movies.Single(m => m.Name == "The King's Speech").Id, Text = "A must-watch for history buffs.", Rating = 4, Date = DateTime.Parse("2024-02-22") ,UserId= "8a445865-a24d-4543-a6c3-9443d048cdb9"},
+                    new Comment { MovieId = movies.Single(m => m.Name == "The King's Speech").Id, Text = "Inspirational story of overcoming challenges.", Rating = 5, Date = DateTime.Parse("2024-03-10") ,UserId= "8a445865-a24d-4543-4123-9443d048cdb9"},
+                    new Comment { MovieId = movies.Single(m => m.Name == "The Artist").Id, Text = "Unique and charming tribute to silent cinema.", Rating = 4, Date = DateTime.Parse("2024-01-05") ,UserId= "8a445865-a24d-4543-4123-9443d048cdb9"},
+                    new Comment { MovieId = movies.Single(m => m.Name == "The Artist").Id, Text = "Creative storytelling through visuals and music.", Rating = 5, Date = DateTime.Parse("2024-02-17") ,UserId= "8a445865-a24d-4543-a6c3-9443d048cdb9"},
+                    new Comment { MovieId = movies.Single(m => m.Name == "The Artist").Id, Text = "A delightful cinematic experience.", Rating = 4, Date = DateTime.Parse("2024-03-01") ,UserId= "8a445865-a24d-4543-4123-9443d048cdb9"},
+                    new Comment { MovieId = movies.Single(m => m.Name == "Birdman").Id, Text = "Intriguing exploration of fame and identity.", Rating = 4, Date = DateTime.Parse("2024-02-08") ,UserId= "8a445865-a24d-4543-a6c3-9443d048cdb9"},
+                    new Comment { MovieId = movies.Single(m => m.Name == "The Revenant").Id, Text = "Visually stunning with a gripping narrative.", Rating = 5, Date = DateTime.Parse("2024-02-12") ,UserId= "8a445865-a24d-4543-a6c3-9443d048cdb9"},
+                    new Comment { MovieId = movies.Single(m => m.Name == "The Revenant").Id, Text = "Leonardo DiCaprio's performance is exceptional.", Rating = 5, Date = DateTime.Parse("2024-03-05") ,UserId= "8a445865-a24d-4543-a6c3-9443d048cdb9"},
+                    new Comment { MovieId = movies.Single(m => m.Name == "The Revenant").Id, Text = "Intense and immersive storytelling.", Rating = 4, Date = DateTime.Parse("2024-03-18") ,UserId= "8a445865-a24d-4543-a6c3-9443d048cdb9"},
+                    new Comment { MovieId = movies.Single(m => m.Name == "Black Swan").Id, Text = "Natalie Portman's acting is captivating.", Rating = 5, Date = DateTime.Parse("2024-01-25") ,UserId= "8a445865-a24d-4543-4123-9443d048cdb9"},
+                    new Comment { MovieId = movies.Single(m => m.Name == "Black Swan").Id, Text = "A dark and mesmerizing psychological thriller.", Rating = 4, Date = DateTime.Parse("2024-02-28") ,UserId= "8a445865-a24d-4543-a6c3-9443d048cdb9"},
+                    new Comment { MovieId = movies.Single(m => m.Name == "Inglourious Basterds").Id, Text = "Tarantino's signature style shines through.", Rating = 5, Date = DateTime.Parse("2024-01-10") ,UserId= "8a445865-a24d-4543-4123-9443d048cdb9"},
+                    new Comment { MovieId = movies.Single(m => m.Name == "Inglourious Basterds").Id, Text = "Brad Pitt delivers a standout performance.", Rating = 4, Date = DateTime.Parse("2024-02-14") ,UserId= "8a445865-a24d-4543-a6c3-9443d048cdb9"},
+                    new Comment { MovieId = movies.Single(m => m.Name == "Inglourious Basterds").Id, Text = "A thrilling alternate history war film.", Rating = 4, Date = DateTime.Parse("2024-03-08") ,UserId= "8a445865-a24d-4543-a6c3-9443d048cdb9"},
+                    new Comment { MovieId = movies.Single(m => m.Name == "The Prestige").Id, Text = "Mind-bending twists and turns.", Rating = 5, Date = DateTime.Parse("2024-02-01") ,UserId= "8a445865-a24d-4543-a6c3-9443d048cdb9"},
+                    new Comment { MovieId = movies.Single(m => m.Name == "The Prestige").Id, Text = "Hugh Jackman and Christian Bale are outstanding.", Rating = 5, Date = DateTime.Parse("2024-03-15") ,UserId= "8a445865-a24d-4543-a6c3-9443d048cdb9"},
+                    new Comment { MovieId = movies.Single(m => m.Name == "The Matrix").Id, Text = "Bad", Rating = 1,Date=DateTime.Parse("2023-12-21") ,UserId= "8a445865-a24d-4543-a6c3-9443d048cdb9"},
+                    new Comment { MovieId = movies.Single(m => m.Name == "The Matrix").Id, Text = "Great movie!", Rating = 4,Date=DateTime.Parse("2024-01-02") ,UserId= "8a445865-a24d-4543-4123-9443d048cdb9"},
+                    new Comment { MovieId = movies.Single(m => m.Name == "The Matrix").Id, Text = "One of my all-time favorites.", Rating = 5,Date=DateTime.Parse("2024-02-11") ,UserId= "8a445865-a24d-4543-a6c3-9443d048cdb9"},
+                    new Comment { MovieId = movies.Single(m => m.Name == "The Godfather").Id, Text = "Mind-bending storyline.", Rating = 4,Date=DateTime.Parse("2024-02-21") ,UserId= "8a445865-a24d-4543-4123-9443d048cdb9"},
+                    new Comment { MovieId = movies.Single(m => m.Name == "The Godfather").Id, Text = "Classic masterpiece.", Rating = 5,Date=DateTime.Parse("2024-03-02") ,UserId= "8a445865-a24d-4543-a6c3-9443d048cdb9"}
                 };
             _context.Comments.AddRange(comments);
             _context.SaveChanges();

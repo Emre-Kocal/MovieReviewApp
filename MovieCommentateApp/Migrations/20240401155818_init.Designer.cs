@@ -12,8 +12,8 @@ using MovieReviewApp.Data;
 namespace MovieReviewApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240328231746_Models_and_Seed")]
-    partial class Models_and_Seed
+    [Migration("20240401155818_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,6 +50,20 @@ namespace MovieReviewApp.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "2c5e174e-ab0e-446f-86af-483d56fd7210",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "2c5e174e-3b0e-446f-86af-483d56fd7210",
+                            Name = "User",
+                            NormalizedName = "USER"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -137,6 +151,23 @@ namespace MovieReviewApp.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "8a445865-a24d-4543-a6c6-9443d048cdb9",
+                            RoleId = "2c5e174e-ab0e-446f-86af-483d56fd7210"
+                        },
+                        new
+                        {
+                            UserId = "8a445865-a24d-4543-a6c3-9443d048cdb9",
+                            RoleId = "2c5e174e-3b0e-446f-86af-483d56fd7210"
+                        },
+                        new
+                        {
+                            UserId = "8a445865-a24d-4543-4123-9443d048cdb9",
+                            RoleId = "2c5e174e-3b0e-446f-86af-483d56fd7210"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -268,6 +299,50 @@ namespace MovieReviewApp.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "8a445865-a24d-4543-a6c6-9443d048cdb9",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "c0f9fdb9-f84f-44f7-8246-9aa882a72d63",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedUserName = "Admin",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDYXKmsic8QIQNpJ3MXA/begZb/bnFRuqcxBcO6twYcV/9BJAco3dEWmQx7C1gC9MA==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "cc24f677-6a84-4a54-aade-c2ca9a9bdfb1",
+                            TwoFactorEnabled = false,
+                            UserName = "admin"
+                        },
+                        new
+                        {
+                            Id = "8a445865-a24d-4543-a6c3-9443d048cdb9",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "6bd5a12c-e2bc-41f1-9458-b790ad1ab84c",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedUserName = "JOSHUA",
+                            PasswordHash = "AQAAAAIAAYagAAAAED1qCdqL1P3hiK82bHu3spdP7FEMyYzQKlk4ZdEUIUKQ1BC+oxvefbj9NNIhJjFzTA==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "e6ff7586-fa1a-405a-9384-ee428a0f19c3",
+                            TwoFactorEnabled = false,
+                            UserName = "Joshua"
+                        },
+                        new
+                        {
+                            Id = "8a445865-a24d-4543-4123-9443d048cdb9",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "e219da8a-f2b6-4e8c-988f-55f815715d35",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedUserName = "ELLIE",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDoHY7x08pz6GHtdbSwSpa9M6Akyt9ekpa2EDSLrjutVEPCGm62g+twHCC027UdGrA==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "5c96100a-778d-4d12-bc4d-3202492a2453",
+                            TwoFactorEnabled = false,
+                            UserName = "Ellie"
+                        });
                 });
 
             modelBuilder.Entity("MovieReviewApp.Models.Comment", b =>
@@ -277,9 +352,6 @@ namespace MovieReviewApp.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AppUserId")
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -294,14 +366,15 @@ namespace MovieReviewApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId");
-
                     b.HasIndex("MovieId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Comments");
                 });
@@ -428,19 +501,21 @@ namespace MovieReviewApp.Migrations
 
             modelBuilder.Entity("MovieReviewApp.Models.Comment", b =>
                 {
-                    b.HasOne("MovieReviewApp.Models.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("AppUserId");
-
                     b.HasOne("MovieReviewApp.Models.Movie", "Movie")
                         .WithMany("Comments")
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("AppUser");
+                    b.HasOne("MovieReviewApp.Models.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Movie");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("MovieReviewApp.Models.Movie", b =>

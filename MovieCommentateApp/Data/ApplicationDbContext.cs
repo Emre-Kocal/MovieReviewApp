@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MovieReviewApp.Models;
 using System.Reflection.Emit;
@@ -29,6 +30,67 @@ namespace MovieReviewApp.Data
                 .HasOne(am => am.Movie)
                 .WithMany(m => m.Actors)
                 .HasForeignKey(am => am.MovieId);
+
+            List<IdentityRole> roles = new List<IdentityRole>
+            {
+                new IdentityRole
+                {
+                    Id ="2c5e174e-ab0e-446f-86af-483d56fd7210",
+                    Name = "Admin",
+                    NormalizedName = "ADMIN"
+                },
+                new IdentityRole
+                {
+                    Id ="2c5e174e-3b0e-446f-86af-483d56fd7210",
+                    Name = "User",
+                    NormalizedName = "USER"
+                },
+            };
+            builder.Entity<IdentityRole>().HasData(roles);
+            var hasher = new PasswordHasher<IdentityUser>();
+            var users = new List<AppUser> {
+                new AppUser
+                {
+                    Id = "8a445865-a24d-4543-a6c6-9443d048cdb9", // primary key
+                    UserName = "admin",
+                    NormalizedUserName = "Admin",
+                    PasswordHash = hasher.HashPassword(null, "Password1")
+                },
+                new AppUser
+                {
+                    Id = "8a445865-a24d-4543-a6c3-9443d048cdb9", // primary key
+                    UserName = "Joshua",
+                    NormalizedUserName = "JOSHUA",
+                    PasswordHash = hasher.HashPassword(null, "Password2")
+                },
+                new AppUser
+                {
+                    Id = "8a445865-a24d-4543-4123-9443d048cdb9", // primary key
+                    UserName = "Ellie",
+                    NormalizedUserName = "ELLIE",
+                    PasswordHash = hasher.HashPassword(null, "Password3")
+                }
+            };
+            builder.Entity<AppUser>().HasData(users);
+            var userroles = new List<IdentityUserRole<string>>
+            {
+                new IdentityUserRole<string>
+                {
+                    RoleId = "2c5e174e-ab0e-446f-86af-483d56fd7210",
+                    UserId = "8a445865-a24d-4543-a6c6-9443d048cdb9"
+                },
+                new IdentityUserRole<string>
+                {
+                    RoleId = "2c5e174e-3b0e-446f-86af-483d56fd7210",
+                    UserId = "8a445865-a24d-4543-a6c3-9443d048cdb9"
+                },
+                new IdentityUserRole<string>
+                {
+                    RoleId = "2c5e174e-3b0e-446f-86af-483d56fd7210",
+                    UserId = "8a445865-a24d-4543-4123-9443d048cdb9"
+                }
+            };
+            builder.Entity<IdentityUserRole<string>>().HasData(userroles);
 
             base.OnModelCreating(builder);
 

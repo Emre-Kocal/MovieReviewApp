@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace MovieReviewApp.Migrations
 {
     /// <inheritdoc />
-    public partial class Models_and_Seed : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -239,27 +241,56 @@ namespace MovieReviewApp.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     MovieId = table.Column<int>(type: "int", nullable: false),
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Rating = table.Column<int>(type: "int", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Comments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Comments_AspNetUsers_AppUserId",
-                        column: x => x.AppUserId,
+                        name: "FK_Comments_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Comments_Movies_MovieId",
                         column: x => x.MovieId,
                         principalTable: "Movies",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "2c5e174e-3b0e-446f-86af-483d56fd7210", null, "User", "USER" },
+                    { "2c5e174e-ab0e-446f-86af-483d56fd7210", null, "Admin", "ADMIN" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[,]
+                {
+                    { "8a445865-a24d-4543-4123-9443d048cdb9", 0, "e219da8a-f2b6-4e8c-988f-55f815715d35", null, false, false, null, null, "ELLIE", "AQAAAAIAAYagAAAAEDoHY7x08pz6GHtdbSwSpa9M6Akyt9ekpa2EDSLrjutVEPCGm62g+twHCC027UdGrA==", null, false, "5c96100a-778d-4d12-bc4d-3202492a2453", false, "Ellie" },
+                    { "8a445865-a24d-4543-a6c3-9443d048cdb9", 0, "6bd5a12c-e2bc-41f1-9458-b790ad1ab84c", null, false, false, null, null, "JOSHUA", "AQAAAAIAAYagAAAAED1qCdqL1P3hiK82bHu3spdP7FEMyYzQKlk4ZdEUIUKQ1BC+oxvefbj9NNIhJjFzTA==", null, false, "e6ff7586-fa1a-405a-9384-ee428a0f19c3", false, "Joshua" },
+                    { "8a445865-a24d-4543-a6c6-9443d048cdb9", 0, "c0f9fdb9-f84f-44f7-8246-9aa882a72d63", null, false, false, null, null, "Admin", "AQAAAAIAAYagAAAAEDYXKmsic8QIQNpJ3MXA/begZb/bnFRuqcxBcO6twYcV/9BJAco3dEWmQx7C1gC9MA==", null, false, "cc24f677-6a84-4a54-aade-c2ca9a9bdfb1", false, "admin" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[,]
+                {
+                    { "2c5e174e-3b0e-446f-86af-483d56fd7210", "8a445865-a24d-4543-4123-9443d048cdb9" },
+                    { "2c5e174e-3b0e-446f-86af-483d56fd7210", "8a445865-a24d-4543-a6c3-9443d048cdb9" },
+                    { "2c5e174e-ab0e-446f-86af-483d56fd7210", "8a445865-a24d-4543-a6c6-9443d048cdb9" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -307,14 +338,14 @@ namespace MovieReviewApp.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Comments_AppUserId",
-                table: "Comments",
-                column: "AppUserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Comments_MovieId",
                 table: "Comments",
                 column: "MovieId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_UserId",
+                table: "Comments",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Movies_GenreId",
