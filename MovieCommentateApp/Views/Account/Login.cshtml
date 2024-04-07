@@ -1,19 +1,13 @@
 ﻿@using MovieReviewApp.Dtos.Account
-@model RegisterDto
+@model LoginDto
 @{
-    Layout = Layout = "~/Views/Shared/EntryLayout.cshtml"; ;
-    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/EntryLayout.cshtml";
 }
-
 
 <div class="row justify-content-center">
     <div class="col-md-6">
-        <h2 class="text-center">Register</h2>
-        <form method="post" asp-action="Register" asp-controller="Account">
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" class="form-control" id="email" placeholder="Enter email" asp-for="Email">
-            </div>
+        <h2 class="text-center">Login</h2>
+        <form method="post" asp-action="Login" asp-controller="Account">
             <div class="form-group">
                 <label for="username">Username</label>
                 <input type="text" class="form-control" id="username" placeholder="Enter username" asp-for="Username">
@@ -34,8 +28,8 @@
                     }
                 </div>
             }
-            <a asp-controller="Account" asp-action="Login">Do you have an account?</a>
-            <input type="submit" class="btn btn-primary btn-block" value="Register">
+            <a asp-controller="Account" asp-action="Register">Do not you have an account?</a>
+            <button type="submit" class="btn btn-primary btn-block">Login</button>
         </form>
     </div>
 </div>

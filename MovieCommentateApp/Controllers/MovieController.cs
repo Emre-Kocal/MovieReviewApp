@@ -1,18 +1,24 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using MovieReviewApp.Dtos.Movie;
 using MovieReviewApp.Interfaces;
+using MovieReviewApp.Models;
 
 namespace MovieReviewApp.Controllers
 {
+    [Authorize]
     public class MovieController : Controller
     {
         private readonly IMovieRepository _movieRepo;
         private readonly IGenreRepository _genreRepo;
+        private readonly SignInManager<AppUser> _signInManager;
 
-        public MovieController(IMovieRepository movieRepo, IGenreRepository genreRepo)
+        public MovieController(IMovieRepository movieRepo, IGenreRepository genreRepo, SignInManager<AppUser> signInManager)
         {
             _movieRepo = movieRepo;
             _genreRepo = genreRepo;
+            _signInManager = signInManager;
         }
 
         public async Task<IActionResult> Movies(QueryMovieDto query)

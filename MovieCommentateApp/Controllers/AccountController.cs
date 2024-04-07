@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MovieReviewApp.Dtos.Account;
+using MovieReviewApp.Migrations;
 using MovieReviewApp.Models;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace MovieReviewApp.Controllers
@@ -17,7 +20,35 @@ namespace MovieReviewApp.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
         }
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginDto loginDto)
+        {
+            if (!ModelState.IsValid)
+                return View();
 
+            var user = await _userManager.Users
+                .FirstOrDefaultAsync(x => x.UserName == loginDto.Username);
+
+            if (user == null)
+            {
+                ModelState.AddModelError(string.Empty, "Username not found and/or password incorrect");
+                return View();
+            }
+
+            var result = await _signInManager
+                .PasswordSignInAsync(loginDto.Username,loginDto.Password,false,false);
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError(string.Empty, "Username not found and/or password incorrect");
+                return View();
+            }
+            return RedirectToAction("Movies", "Movie");
+        }
         [HttpGet]
         public IActionResult Register()
         {
@@ -29,20 +60,20 @@ namespace MovieReviewApp.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(registerDto);
+                return View();
             }
             var existingEmail = await _userManager.FindByEmailAsync(registerDto.Email);
             if (existingEmail != null)
             {
                 ModelState.AddModelError(string.Empty, "The email is already in use.");
-                return View(registerDto);
+                return View();
             }
 
             var existingUser = await _userManager.FindByNameAsync(registerDto.Username);
             if (existingUser != null)
             {
                 ModelState.AddModelError(string.Empty, "The username is already in use.");
-                return View(registerDto);
+                return View();
             }
 
             var appUser = new AppUser
@@ -58,7 +89,7 @@ namespace MovieReviewApp.Controllers
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
-                return View(registerDto);
+                return View();
             }
 
             var roleResult = await _userManager.AddToRoleAsync(appUser, "User");
@@ -68,10 +99,10 @@ namespace MovieReviewApp.Controllers
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
-                return View(registerDto);
+                return View();
             }
 
-            return RedirectToAction("Movies", "Movie");
+            return RedirectToAction("Login");
         }
     }
 }
