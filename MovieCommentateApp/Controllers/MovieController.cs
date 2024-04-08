@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using MovieReviewApp.Dtos.Comment;
 using MovieReviewApp.Dtos.Movie;
 using MovieReviewApp.Interfaces;
 using MovieReviewApp.Models;
+using System.Security.Claims;
 
 namespace MovieReviewApp.Controllers
 {
@@ -28,6 +30,7 @@ namespace MovieReviewApp.Controllers
             ViewBag.LastQuery = query;
             return View(list);
         }
+        [HttpGet]
         public async Task<IActionResult> MovieDetails(int id)
         {
             var movie = await _movieRepo.GetByIdWithAllAsync(id);
@@ -35,6 +38,7 @@ namespace MovieReviewApp.Controllers
             {
                 //return Error
             }
+            ViewData["userId"] = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             return View(movie);
         }
     }

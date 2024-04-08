@@ -67,7 +67,7 @@ namespace MovieReviewApp.Repositories
             return model;
         }
 
-        public async Task<MovieAllDto?> GetByIdWithAllAsync(int id)
+        public async Task<Movie?> GetByIdWithAllAsync(int id)
         {
             var model = await _context.Movies
                 .Include(x => x.Genre)
@@ -78,8 +78,7 @@ namespace MovieReviewApp.Repositories
                 .FirstOrDefaultAsync(x => x.Id == id);
             if (model == null)
                 return null;
-            var modeldto = model.MovieToMovieAllDto();
-            return modeldto;
+            return model;
         }
 
         public async Task<Movie?> UpdateAsync(int id, UpdateMovieDto updateMovieDto)

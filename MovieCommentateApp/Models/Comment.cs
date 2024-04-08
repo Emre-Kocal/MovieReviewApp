@@ -9,7 +9,7 @@ namespace MovieReviewApp.Models
         public int MovieId { get; set; } 
         public string Text { get; set; } =string.Empty;
         public int Rating { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime Date { get; set; }=DateTime.Now;
         public Movie Movie { get; set; }
         public AppUser User { get; set; }
     }
