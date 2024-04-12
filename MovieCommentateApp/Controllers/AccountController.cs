@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MovieReviewApp.Dtos.Account;
-using MovieReviewApp.Migrations;
 using MovieReviewApp.Models;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -30,7 +29,6 @@ namespace MovieReviewApp.Controllers
         {
             if (!ModelState.IsValid)
                 return View();
-
             var user = await _userManager.Users
                 .FirstOrDefaultAsync(x => x.UserName == loginDto.Username);
 
@@ -103,6 +101,11 @@ namespace MovieReviewApp.Controllers
             }
 
             return RedirectToAction("Login");
+        }
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Login", "Account");
         }
     }
 }

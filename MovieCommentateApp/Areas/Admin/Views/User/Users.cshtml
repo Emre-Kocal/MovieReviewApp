@@ -1,0 +1,31 @@
+﻿@using MovieReviewApp.Areas.Admin.Dtos.User
+@model List<UserDto>
+@{
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<form method="post" class="p-5">
+    <input class="form-control" id="userSearch" name="Username" placeholder="Enter username" />
+    <input type="submit" value="Search" class="btn btn-light" />
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Username</th>
+            <th scope="col">Comment Count</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>
+                    <!-- Doğru alan ismi ve controller ismiyle bağlantı sağlama -->
+                    <a href="@Url.Action("UserDetails", "User", new { area = "Admin", id = user.Id })">@user.Username</a>
+                </td>
+                <td>@user.Comments.Count</td>
+            </tr>
+        }
+    </tbody>
+</table>

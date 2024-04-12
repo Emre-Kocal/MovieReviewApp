@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using MovieReviewApp;
+using MovieReviewApp.Areas.Admin.Interfaces;
+using MovieReviewApp.Areas.Admin.Repositories;
 using MovieReviewApp.Data;
 using MovieReviewApp.Interfaces;
 using MovieReviewApp.Models;
@@ -29,8 +31,10 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 
 builder.Services.AddScoped<IMovieRepository,MovieRepository>();
 builder.Services.AddScoped<IGenreRepository,GenreRepository>();
-builder.Services.AddScoped<ICommentRepository,CommentRepository>();
+builder.Services.AddScoped<MovieReviewApp.Areas.Admin.Interfaces.ICommentRepository, MovieReviewApp.Areas.Admin.Repositories.CommentRepository>();
 builder.Services.AddScoped<IActorRepository,ActorRepository>();
+builder.Services.AddScoped<IUserRepository,UserRepository>();
+builder.Services.AddScoped<MovieReviewApp.Interfaces.ICommentRepository, MovieReviewApp.Repositories.CommentRepository>();
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
@@ -74,14 +78,13 @@ app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller=Account}/{action=Login}/{id?}");
+
+    endpoints.MapControllerRoute(
         name: "default",
-        pattern: "{controller=Account}/{action=Login}");
+        pattern: "{controller=Account}/{action=Login}/{id?}");
 });
 app.UseStaticFiles();
-
-
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Account}/{action=Register}");
 
 app.Run();

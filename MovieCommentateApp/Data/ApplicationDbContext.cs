@@ -53,8 +53,8 @@ namespace MovieReviewApp.Data
                 {
                     Id = "8a445865-a24d-4543-a6c6-9443d048cdb9", // primary key
                     UserName = "admin",
-                    NormalizedUserName = "Admin",
-                    PasswordHash = hasher.HashPassword(null, "Password1")
+                    NormalizedUserName = "ADMIN",
+                    PasswordHash = hasher.HashPassword(null, "Admin123")
                 },
                 new AppUser
                 {

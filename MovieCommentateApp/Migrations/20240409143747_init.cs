@@ -278,9 +278,9 @@ namespace MovieReviewApp.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "8a445865-a24d-4543-4123-9443d048cdb9", 0, "e219da8a-f2b6-4e8c-988f-55f815715d35", null, false, false, null, null, "ELLIE", "AQAAAAIAAYagAAAAEDoHY7x08pz6GHtdbSwSpa9M6Akyt9ekpa2EDSLrjutVEPCGm62g+twHCC027UdGrA==", null, false, "5c96100a-778d-4d12-bc4d-3202492a2453", false, "Ellie" },
-                    { "8a445865-a24d-4543-a6c3-9443d048cdb9", 0, "6bd5a12c-e2bc-41f1-9458-b790ad1ab84c", null, false, false, null, null, "JOSHUA", "AQAAAAIAAYagAAAAED1qCdqL1P3hiK82bHu3spdP7FEMyYzQKlk4ZdEUIUKQ1BC+oxvefbj9NNIhJjFzTA==", null, false, "e6ff7586-fa1a-405a-9384-ee428a0f19c3", false, "Joshua" },
-                    { "8a445865-a24d-4543-a6c6-9443d048cdb9", 0, "c0f9fdb9-f84f-44f7-8246-9aa882a72d63", null, false, false, null, null, "Admin", "AQAAAAIAAYagAAAAEDYXKmsic8QIQNpJ3MXA/begZb/bnFRuqcxBcO6twYcV/9BJAco3dEWmQx7C1gC9MA==", null, false, "cc24f677-6a84-4a54-aade-c2ca9a9bdfb1", false, "admin" }
+                    { "8a445865-a24d-4543-4123-9443d048cdb9", 0, "a9b65194-6d5f-4869-a957-a9cd93dcf5c9", null, false, false, null, null, "ELLIE", "AQAAAAIAAYagAAAAEMDzoilO3h964ELcTqlcXvBaLs+dXg3uo3b0LpcTJX+LFw6WYoH8zGoYoevEAy9eKA==", null, false, "2dbf0d66-a36b-4695-a4a6-e75147d7ee8c", false, "Ellie" },
+                    { "8a445865-a24d-4543-a6c3-9443d048cdb9", 0, "eb945be6-43d9-4e95-912d-ed70f69fc8d7", null, false, false, null, null, "JOSHUA", "AQAAAAIAAYagAAAAEETJDix8pYl6DlXd6C5h8+MpKJ5Ycthy1iUNkGN+DJaQw3TScKNn/pWQu8WHRC5T6A==", null, false, "dad80b32-5219-49b8-8442-b456fcb0163a", false, "Joshua" },
+                    { "8a445865-a24d-4543-a6c6-9443d048cdb9", 0, "5114390a-a483-41d4-ab69-5c58fb1852e4", null, false, false, null, null, "ADMIN", "AQAAAAIAAYagAAAAEGmaKmgL2Jt4VZsStwLSZYZWrT9gfq4Z3TTqICp+OIfhFXxWvCRtcrjvdhdkt9h5dw==", null, false, "7826ebe4-64f2-461d-b21f-79a09248961c", false, "admin" }
                 });
 
             migrationBuilder.InsertData(

@@ -15,12 +15,14 @@ namespace MovieReviewApp.Controllers
         private readonly IMovieRepository _movieRepo;
         private readonly IGenreRepository _genreRepo;
         private readonly SignInManager<AppUser> _signInManager;
+        private readonly UserManager<AppUser> _userManager;
 
-        public MovieController(IMovieRepository movieRepo, IGenreRepository genreRepo, SignInManager<AppUser> signInManager)
+        public MovieController(IMovieRepository movieRepo, IGenreRepository genreRepo, SignInManager<AppUser> signInManager, UserManager<AppUser> userManager)
         {
             _movieRepo = movieRepo;
             _genreRepo = genreRepo;
             _signInManager = signInManager;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> Movies(QueryMovieDto query)
@@ -28,6 +30,13 @@ namespace MovieReviewApp.Controllers
             ViewBag.Genres = await _genreRepo.GetAllAsync();
             var list=await _movieRepo.GetAllAsync(query);
             ViewBag.LastQuery = query;
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user == null)
+            {
+                //return error 
+            }
+            var roles = await _userManager.GetRolesAsync(user);
+            ViewBag.userRole = roles[0];
             return View(list);
         }
         [HttpGet]
@@ -39,6 +48,13 @@ namespace MovieReviewApp.Controllers
                 //return Error
             }
             ViewData["userId"] = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user == null)
+            {
+                //return error 
+            }
+            var roles = await _userManager.GetRolesAsync(user);
+            ViewBag.userRole = roles[0];
             return View(movie);
         }
     }

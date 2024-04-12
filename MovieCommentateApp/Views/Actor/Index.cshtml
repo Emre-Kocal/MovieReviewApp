@@ -1,7 +1,13 @@
 ﻿@using MovieReviewApp.Models
 @model Actor
 @{
-    Layout = "~/Views/Shared/UserLayout.cshtml";
+    if (ViewBag.userRole=="User")
+    {
+        Layout = "~/Views/Shared/UserLayout.cshtml";
+    }else if(ViewBag.userRole=="Admin")
+    {
+        Layout = "~/Views/Shared/AdminLayout.cshtml";
+    }
 }
 
 <div class="d-flex justify-content-center">

@@ -12,7 +12,9 @@
 <body>
     <nav class="navbar bg-body-tertiary">
         <div class="container-fluid">
-            <a asp-action="Movies" asp-controller="Movie" class="navbar-brand">Home</a>
+            <a asp-action="Movies" asp-controller="Movie" asp-area="" class="navbar-brand">Home</a>
+            <a asp-area="Admin" asp-action="Users" asp-controller="User" class="navbar-brand">Users</a>
+            <a class="navbar-brand">Movies</a>
             <div>
                 <form asp-action="Logout" asp-controller="Account">
                     <input type="submit" class="btn btn-danger mx-3" value="Logout">
