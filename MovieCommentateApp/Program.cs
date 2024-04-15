@@ -31,9 +31,10 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 
 builder.Services.AddScoped<IMovieRepository,MovieRepository>();
 builder.Services.AddScoped<IGenreRepository,GenreRepository>();
-builder.Services.AddScoped<MovieReviewApp.Areas.Admin.Interfaces.ICommentRepository, MovieReviewApp.Areas.Admin.Repositories.CommentRepository>();
-builder.Services.AddScoped<IActorRepository,ActorRepository>();
 builder.Services.AddScoped<IUserRepository,UserRepository>();
+builder.Services.AddScoped<MovieReviewApp.Areas.Admin.Interfaces.IActorRepository, MovieReviewApp.Areas.Admin.Repositories.ActorRepository>();
+builder.Services.AddScoped<MovieReviewApp.Interfaces.IActorRepository, MovieReviewApp.Repositories.ActorRepository>();
+builder.Services.AddScoped<MovieReviewApp.Areas.Admin.Interfaces.ICommentRepository, MovieReviewApp.Areas.Admin.Repositories.CommentRepository>();
 builder.Services.AddScoped<MovieReviewApp.Interfaces.ICommentRepository, MovieReviewApp.Repositories.CommentRepository>();
 
 builder.Services.ConfigureApplicationCookie(options =>

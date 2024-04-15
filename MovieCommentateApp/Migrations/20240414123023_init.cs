@@ -17,17 +17,17 @@ namespace MovieReviewApp.Migrations
                 name: "Actors",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Nationality = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Bio = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    full_name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    image = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    birth_date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    nationality = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    bio = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Actors", x => x.Id);
+                    table.PrimaryKey("PK_Actors", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -75,7 +75,7 @@ namespace MovieReviewApp.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -194,18 +194,18 @@ namespace MovieReviewApp.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Year = table.Column<int>(type: "int", nullable: false),
-                    PosterImage = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    GenreId = table.Column<int>(type: "int", nullable: false)
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    year = table.Column<int>(type: "int", nullable: false),
+                    poster_image = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    genre_id = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Movies", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Movies_Genres_GenreId",
-                        column: x => x.GenreId,
+                        name: "FK_Movies_Genres_genre_id",
+                        column: x => x.genre_id,
                         principalTable: "Genres",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -215,21 +215,21 @@ namespace MovieReviewApp.Migrations
                 name: "ActorMovies",
                 columns: table => new
                 {
-                    ActorId = table.Column<int>(type: "int", nullable: false),
-                    MovieId = table.Column<int>(type: "int", nullable: false)
+                    actor_id = table.Column<int>(type: "int", nullable: false),
+                    movie_id = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ActorMovies", x => new { x.ActorId, x.MovieId });
+                    table.PrimaryKey("PK_ActorMovies", x => new { x.actor_id, x.movie_id });
                     table.ForeignKey(
-                        name: "FK_ActorMovies_Actors_ActorId",
-                        column: x => x.ActorId,
+                        name: "FK_ActorMovies_Actors_actor_id",
+                        column: x => x.actor_id,
                         principalTable: "Actors",
-                        principalColumn: "Id",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ActorMovies_Movies_MovieId",
-                        column: x => x.MovieId,
+                        name: "FK_ActorMovies_Movies_movie_id",
+                        column: x => x.movie_id,
                         principalTable: "Movies",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -241,24 +241,24 @@ namespace MovieReviewApp.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    MovieId = table.Column<int>(type: "int", nullable: false),
-                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Rating = table.Column<int>(type: "int", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    user_id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    movie_id = table.Column<int>(type: "int", nullable: false),
+                    text = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    rating = table.Column<int>(type: "int", nullable: false),
+                    date = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Comments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Comments_AspNetUsers_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Comments_AspNetUsers_user_id",
+                        column: x => x.user_id,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Comments_Movies_MovieId",
-                        column: x => x.MovieId,
+                        name: "FK_Comments_Movies_movie_id",
+                        column: x => x.movie_id,
                         principalTable: "Movies",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -278,9 +278,9 @@ namespace MovieReviewApp.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "8a445865-a24d-4543-4123-9443d048cdb9", 0, "a9b65194-6d5f-4869-a957-a9cd93dcf5c9", null, false, false, null, null, "ELLIE", "AQAAAAIAAYagAAAAEMDzoilO3h964ELcTqlcXvBaLs+dXg3uo3b0LpcTJX+LFw6WYoH8zGoYoevEAy9eKA==", null, false, "2dbf0d66-a36b-4695-a4a6-e75147d7ee8c", false, "Ellie" },
-                    { "8a445865-a24d-4543-a6c3-9443d048cdb9", 0, "eb945be6-43d9-4e95-912d-ed70f69fc8d7", null, false, false, null, null, "JOSHUA", "AQAAAAIAAYagAAAAEETJDix8pYl6DlXd6C5h8+MpKJ5Ycthy1iUNkGN+DJaQw3TScKNn/pWQu8WHRC5T6A==", null, false, "dad80b32-5219-49b8-8442-b456fcb0163a", false, "Joshua" },
-                    { "8a445865-a24d-4543-a6c6-9443d048cdb9", 0, "5114390a-a483-41d4-ab69-5c58fb1852e4", null, false, false, null, null, "ADMIN", "AQAAAAIAAYagAAAAEGmaKmgL2Jt4VZsStwLSZYZWrT9gfq4Z3TTqICp+OIfhFXxWvCRtcrjvdhdkt9h5dw==", null, false, "7826ebe4-64f2-461d-b21f-79a09248961c", false, "admin" }
+                    { "8a445865-a24d-4543-4123-9443d048cdb9", 0, "01042bdb-05d7-43dd-b158-72518d79126d", null, false, false, null, null, "ELLIE", "AQAAAAIAAYagAAAAENDcKFMFlYrhh89BeD5yTW1V8LZY6cdhxXwBDo2GjLxYv86KFJjLqvODXPQuXiIA6Q==", null, false, "27bc3aca-3f21-49d6-851b-b923b2075954", false, "Ellie" },
+                    { "8a445865-a24d-4543-a6c3-9443d048cdb9", 0, "9fed17f7-734d-4a1c-a8c5-a1f5ec5fc40d", null, false, false, null, null, "JOSHUA", "AQAAAAIAAYagAAAAED37p+bdtzlIhhgDq9b4JhwWyCnXj7IevfyaSBWmw0M6pDWgMIGNHfI0hgmt6w8AtA==", null, false, "e6bbf8ca-6b7d-4fc8-9ce7-1ac99e0adde7", false, "Joshua" },
+                    { "8a445865-a24d-4543-a6c6-9443d048cdb9", 0, "5446d328-f2ac-481e-8263-fc3539152783", null, false, false, null, null, "ADMIN", "AQAAAAIAAYagAAAAEDoizwJqisQjA0qmjcSu+sZ52qePaPOTsh0LVi9mPx+I+8h8ZVsQWQwzPw1PurZNtg==", null, false, "c17c4394-816a-49ea-9694-701a5a68fe11", false, "admin" }
                 });
 
             migrationBuilder.InsertData(
@@ -294,9 +294,9 @@ namespace MovieReviewApp.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ActorMovies_MovieId",
+                name: "IX_ActorMovies_movie_id",
                 table: "ActorMovies",
-                column: "MovieId");
+                column: "movie_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -338,19 +338,19 @@ namespace MovieReviewApp.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Comments_MovieId",
+                name: "IX_Comments_movie_id",
                 table: "Comments",
-                column: "MovieId");
+                column: "movie_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Comments_UserId",
+                name: "IX_Comments_user_id",
                 table: "Comments",
-                column: "UserId");
+                column: "user_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Movies_GenreId",
+                name: "IX_Movies_genre_id",
                 table: "Movies",
-                column: "GenreId");
+                column: "genre_id");
         }
 
         /// <inheritdoc />

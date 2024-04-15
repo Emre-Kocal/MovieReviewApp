@@ -12,7 +12,7 @@ using MovieReviewApp.Data;
 namespace MovieReviewApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240409143747_init")]
+    [Migration("20240414123023_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -193,47 +193,53 @@ namespace MovieReviewApp.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Bio")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("bio");
 
                     b.Property<DateTime>("BirthDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("birth_date");
 
                     b.Property<string>("FullName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("full_name");
 
                     b.Property<string>("Image")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("image");
 
                     b.Property<string>("Nationality")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("nationality");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Actors");
+                    b.ToTable("Actors", (string)null);
                 });
 
             modelBuilder.Entity("MovieReviewApp.Models.ActorMovie", b =>
                 {
                     b.Property<int>("ActorId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("actor_id");
 
                     b.Property<int>("MovieId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("movie_id");
 
                     b.HasKey("ActorId", "MovieId");
 
                     b.HasIndex("MovieId");
 
-                    b.ToTable("ActorMovies");
+                    b.ToTable("ActorMovies", (string)null);
                 });
 
             modelBuilder.Entity("MovieReviewApp.Models.AppUser", b =>
@@ -305,13 +311,13 @@ namespace MovieReviewApp.Migrations
                         {
                             Id = "8a445865-a24d-4543-a6c6-9443d048cdb9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5114390a-a483-41d4-ab69-5c58fb1852e4",
+                            ConcurrencyStamp = "5446d328-f2ac-481e-8263-fc3539152783",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEGmaKmgL2Jt4VZsStwLSZYZWrT9gfq4Z3TTqICp+OIfhFXxWvCRtcrjvdhdkt9h5dw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDoizwJqisQjA0qmjcSu+sZ52qePaPOTsh0LVi9mPx+I+8h8ZVsQWQwzPw1PurZNtg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "7826ebe4-64f2-461d-b21f-79a09248961c",
+                            SecurityStamp = "c17c4394-816a-49ea-9694-701a5a68fe11",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         },
@@ -319,13 +325,13 @@ namespace MovieReviewApp.Migrations
                         {
                             Id = "8a445865-a24d-4543-a6c3-9443d048cdb9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "eb945be6-43d9-4e95-912d-ed70f69fc8d7",
+                            ConcurrencyStamp = "9fed17f7-734d-4a1c-a8c5-a1f5ec5fc40d",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "JOSHUA",
-                            PasswordHash = "AQAAAAIAAYagAAAAEETJDix8pYl6DlXd6C5h8+MpKJ5Ycthy1iUNkGN+DJaQw3TScKNn/pWQu8WHRC5T6A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAED37p+bdtzlIhhgDq9b4JhwWyCnXj7IevfyaSBWmw0M6pDWgMIGNHfI0hgmt6w8AtA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "dad80b32-5219-49b8-8442-b456fcb0163a",
+                            SecurityStamp = "e6bbf8ca-6b7d-4fc8-9ce7-1ac99e0adde7",
                             TwoFactorEnabled = false,
                             UserName = "Joshua"
                         },
@@ -333,13 +339,13 @@ namespace MovieReviewApp.Migrations
                         {
                             Id = "8a445865-a24d-4543-4123-9443d048cdb9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a9b65194-6d5f-4869-a957-a9cd93dcf5c9",
+                            ConcurrencyStamp = "01042bdb-05d7-43dd-b158-72518d79126d",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "ELLIE",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMDzoilO3h964ELcTqlcXvBaLs+dXg3uo3b0LpcTJX+LFw6WYoH8zGoYoevEAy9eKA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAENDcKFMFlYrhh89BeD5yTW1V8LZY6cdhxXwBDo2GjLxYv86KFJjLqvODXPQuXiIA6Q==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "2dbf0d66-a36b-4695-a4a6-e75147d7ee8c",
+                            SecurityStamp = "27bc3aca-3f21-49d6-851b-b923b2075954",
                             TwoFactorEnabled = false,
                             UserName = "Ellie"
                         });
@@ -354,21 +360,26 @@ namespace MovieReviewApp.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("date");
 
                     b.Property<int>("MovieId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("movie_id");
 
                     b.Property<int>("Rating")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("rating");
 
                     b.Property<string>("Text")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("text");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("user_id");
 
                     b.HasKey("Id");
 
@@ -376,7 +387,7 @@ namespace MovieReviewApp.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("MovieReviewApp.Models.Genre", b =>
@@ -389,11 +400,12 @@ namespace MovieReviewApp.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("name");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Genres");
+                    b.ToTable("Genres", (string)null);
                 });
 
             modelBuilder.Entity("MovieReviewApp.Models.Movie", b =>
@@ -405,28 +417,31 @@ namespace MovieReviewApp.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("description");
 
                     b.Property<int>("GenreId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("genre_id");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("name");
 
                     b.Property<string>("PosterImage")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("poster_image");
 
                     b.Property<int>("Year")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("year");
 
                     b.HasKey("Id");
 
                     b.HasIndex("GenreId");
 
-                    b.ToTable("Movies");
+                    b.ToTable("Movies", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -508,7 +523,7 @@ namespace MovieReviewApp.Migrations
                         .IsRequired();
 
                     b.HasOne("MovieReviewApp.Models.AppUser", "User")
-                        .WithMany()
+                        .WithMany("Comments")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -532,6 +547,11 @@ namespace MovieReviewApp.Migrations
             modelBuilder.Entity("MovieReviewApp.Models.Actor", b =>
                 {
                     b.Navigation("Movies");
+                });
+
+            modelBuilder.Entity("MovieReviewApp.Models.AppUser", b =>
+                {
+                    b.Navigation("Comments");
                 });
 
             modelBuilder.Entity("MovieReviewApp.Models.Genre", b =>

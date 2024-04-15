@@ -1,0 +1,76 @@
+﻿@using MovieReviewApp.Areas.Admin.Dtos.Actor
+@model UpdateActorDto
+
+@{
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<h2>Update Actor</h2>
+
+<!-- Form for updating an actor -->
+<form method="post" enctype="multipart/form-data" asp-action="Update" asp-controller="Actor" asp-area="Admin" class="form-horizontal">
+
+    <!-- Actor ID (hidden field) -->
+    <input type="hidden" name="Id" value="@Model.Id">
+
+    <!-- Full Name -->
+    <div class="mb-3">
+        <label for="FullName" class="form-label">Full Name</label>
+        <input type="text" class="form-control" id="FullName" name="FullName" value="@Model.FullName" required minlength="4" maxlength="280">
+    </div>
+
+    <!-- Current Image -->
+    @if (!string.IsNullOrEmpty(Model.Image))
+    {
+        <div class="mb-3">
+            <label class="form-label">Current Image</label>
+            <br>
+            <img src="~/img/Actor/@Model.Image" class="img-thumbnail" style="width: 150px; height: 150px;" alt="Current Image">
+        </div>
+    }
+
+    <!-- Image -->
+    <div class="mb-3">
+        <label for="Image" class="form-label">New Image</label>
+        <input type="file" class="form-control" id="Image" name="imageFile" accept="image/*">
+        <small class="form-text text-muted">Upload a new image if you want to change the actor's image.</small>
+    </div>
+
+    <!-- Birth Date -->
+    <div class="mb-3">
+        <label for="BirthDate" class="form-label">Birth Date</label>
+        <input type="date" class="form-control" id="BirthDate" name="BirthDate" value="@Model.BirthDate.ToString("yyyy-MM-dd")" required>
+    </div>
+
+    <!-- Nationality -->
+    <div class="mb-3">
+        <label for="Nationality" class="form-label">Nationality</label>
+        <input type="text" class="form-control" id="Nationality" name="Nationality" value="@Model.Nationality" required>
+    </div>
+
+    <!-- Bio -->
+    <div class="mb-3">
+        <label for="Bio" class="form-label">Biography</label>
+        <textarea class="form-control" id="Bio" name="Bio" rows="5" maxlength="1000">@Model.Bio</textarea>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="mb-3">
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <a href="@Url.Action("Actors", "Actor", new { area = "Admin" })" class="btn btn-secondary">Cancel</a>
+    </div>
+
+    <!-- Errors -->
+    @if (ViewData.ModelState.Values.Any(ms => ms.Errors.Count > 0))
+    {
+        <div class="alert alert-danger mt-3" role="alert">
+            @foreach (var modelState in ViewData.ModelState.Values)
+            {
+                foreach (var error in modelState.Errors)
+                {
+                    <div>@error.ErrorMessage</div>
+                }
+            }
+        </div>
+    }
+</form>

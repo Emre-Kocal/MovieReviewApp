@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using MovieReviewApp.Data.Configurations;
 using MovieReviewApp.Models;
 using System.Reflection.Emit;
 
@@ -93,7 +94,11 @@ namespace MovieReviewApp.Data
             builder.Entity<IdentityUserRole<string>>().HasData(userroles);
 
             base.OnModelCreating(builder);
-
+            builder.ApplyConfiguration(new MovieConfiguration());
+            builder.ApplyConfiguration(new GenreConfiguration());
+            builder.ApplyConfiguration(new CommentConfiguration());
+            builder.ApplyConfiguration(new ActorConfiguration());
+            builder.ApplyConfiguration(new ActorMovieConfiguration());
         }
     }
 }

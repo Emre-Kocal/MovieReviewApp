@@ -1,0 +1,58 @@
+﻿@using MovieReviewApp.Areas.Admin.Dtos.Actor
+@model CreateActorDto
+@{
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<h2>Add New Actor</h2>
+
+<!-- Form for adding a new actor -->
+<form method="post" enctype="multipart/form-data" asp-action="Add" asp-controller="Actors" asp-area="Admin" class="form-horizontal">
+
+    <!-- Full Name -->
+    <div class="mb-3">
+        <label for="FullName" class="form-label">Full Name</label>
+        <input type="text" class="form-control" id="FullName" name="FullName" required minlength="4" maxlength="280">
+    </div>
+
+    <!-- Image -->
+    <div class="mb-3">
+        <label for="Image" class="form-label">Image</label>
+        <input type="file" class="form-control" id="Image" name="imageFile" accept="image/*">
+    </div>
+
+    <!-- Birth Date -->
+    <div class="mb-3">
+        <label for="BirthDate" class="form-label">Birth Date</label>
+        <input type="date" class="form-control" id="BirthDate" name="BirthDate" required>
+    </div>
+
+    <!-- Nationality -->
+    <div class="mb-3">
+        <label for="Nationality" class="form-label">Nationality</label>
+        <input type="text" class="form-control" id="Nationality" name="Nationality" required>
+    </div>
+
+    <!-- Bio -->
+    <div class="mb-3">
+        <label for="Bio" class="form-label">Biography</label>
+        <textarea class="form-control" id="Bio" name="Bio" rows="5" maxlength="1000"></textarea>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="mb-3">
+        <button type="submit" class="btn btn-primary">Add Actor</button>
+    </div>
+    @if (ViewData.ModelState.Values.Count() > 0)
+    {
+        <div class="alert alert-danger mt-3" role="alert">
+            @foreach (var modelState in ViewData.ModelState.Values)
+            {
+                foreach (var error in modelState.Errors)
+                {
+                    <div>@error.ErrorMessage</div>
+                }
+            }
+        </div>
+    }
+</form>
