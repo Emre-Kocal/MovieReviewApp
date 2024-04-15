@@ -1,0 +1,51 @@
+﻿@using MovieReviewApp.Models
+@model List<Genre>
+@{
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<div class="my-4">
+    <form method="post" action="@Url.Action("Add", "Genre", new { area = "Admin" })" onsubmit="return confirm('Are you sure you want to add this genre?');" class="form-horizontal">
+        <div class="mb-3">
+            <label for="Name" class="form-label">Genre Name</label>
+            <input type="text" class="form-control" name="Name">
+        </div>
+
+        <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="Status" name="Status">
+            <label class="form-check-label" for="Status">Active</label>
+        </div>
+
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary">Add Genre</button>
+        </div>
+    </form>
+</div>
+
+<table class="table">
+    <tr>
+        <th>Name</th>
+        <th>Movie Count</th>
+        <th></th>
+    </tr>
+    @foreach (var genre in Model)
+    {
+        <tr>
+            <td>@genre.Name</td>
+            <td>@genre.Movies.Count</td>
+            <td>
+                <form method="post" action="@Url.Action("StatusChange", "Genre", new { area = "Admin", id = genre.Id })" onsubmit="return confirm('Are you sure you want to change status of this genre?');">
+                    @* Set Status Passive *@
+                    @if (genre.Status)
+                    {
+                        <button type="submit" class="btn btn-danger btn-sm">Set Status Passive</button>
+                    }
+                    else
+                    {
+                        <button type="submit" class="btn btn-success btn-sm">Set Status Active</button>
+                    }
+                </form>
+            </td>
+        </tr>
+    }
+</table>

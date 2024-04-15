@@ -36,7 +36,10 @@ namespace MovieReviewApp.Repositories
 
         public async Task<List<Movie>> GetAllAsync(QueryMovieDto query)
         {
-            var list = _context.Movies.AsQueryable();
+            var list = _context.Movies
+                .Include(x=>x.Genre)
+                .Where(x=>x.Genre.Status)
+                .AsQueryable();
 
             if (!query.Name.IsNullOrEmpty())
                 list = list.Where(x => x.Name.ToLower().Contains(query.Name.ToLower()));
@@ -58,12 +61,18 @@ namespace MovieReviewApp.Repositories
 
         public async Task<List<Movie>> GetAllAsync()
         {
-            return await _context.Movies.ToListAsync();
+            return await _context.Movies
+                .Include(x => x.Genre)
+                .Where(x => x.Genre.Status)
+                .ToListAsync();
         }
 
         public async Task<Movie?> GetByIdAsync(int id)
         {
-            var model = await _context.Movies.FindAsync(id);
+            var model = await _context.Movies
+                .Include(x => x.Genre)
+                .Where(x => x.Genre.Status)
+                .FirstOrDefaultAsync(x => x.Id == id);
             return model;
         }
 
@@ -75,9 +84,8 @@ namespace MovieReviewApp.Repositories
                 .ThenInclude(x => x.Actor)
                 .Include(x => x.Comments)
                 .ThenInclude(x => x.User)
+                .Where(x => x.Genre.Status)
                 .FirstOrDefaultAsync(x => x.Id == id);
-            if (model == null)
-                return null;
             return model;
         }
 

@@ -6,18 +6,6 @@ namespace MovieReviewApp.Areas.Admin.Mappers
 {
     public static class ActorMapper
     {
-        public static Actor UpdateActorToActor(this UpdateActorDto model)
-        {
-            return new Actor
-            {
-                Id = model.Id,
-                Bio=model.Bio,
-                BirthDate=model.BirthDate,
-                FullName=model.FullName,
-                Image = model.Image,
-                Nationality = model.Nationality,
-            };
-        }
         public static UpdateActorDto ActorToUpdateActorDto(this Actor actor)
         {
             return new UpdateActorDto

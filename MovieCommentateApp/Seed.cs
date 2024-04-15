@@ -21,16 +21,16 @@ namespace MovieReviewApp
 
             var genres = new List<Genre>
                 {
-                    new Genre { Name = "Action" },
-                    new Genre { Name = "Comedy" },
-                    new Genre { Name = "Drama" },
-                    new Genre { Name = "Thriller" },
-                    new Genre { Name = "Sci-Fi" },
-                    new Genre { Name = "Adventure" },
-                    new Genre { Name = "Biography" },
-                    new Genre { Name = "Romance" },
-                    new Genre { Name = "Fantasy" },
-                    new Genre { Name = "Mystery" }
+                    new Genre { Name = "Action",Status=true },
+                    new Genre { Name = "Comedy",Status=true },
+                    new Genre { Name = "Drama" ,Status=true},
+                    new Genre { Name = "Thriller",Status=true },
+                    new Genre { Name = "Sci-Fi",Status=true },
+                    new Genre { Name = "Adventure",Status=true },
+                    new Genre { Name = "Biography",Status=true },
+                    new Genre { Name = "Romance",Status=true },
+                    new Genre { Name = "Fantasy",Status=true },
+                    new Genre { Name = "Mystery",Status=true }
                 };
             _context.Genres.AddRange(genres);
             _context.SaveChanges();

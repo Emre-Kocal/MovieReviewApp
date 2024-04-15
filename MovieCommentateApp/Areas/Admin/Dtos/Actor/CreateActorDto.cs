@@ -7,14 +7,14 @@ namespace MovieReviewApp.Areas.Admin.Dtos.Actor
     {
         [Required]
         [MinLength(4, ErrorMessage = "Full Name must be 4 characters")]
-        [MaxLength(280, ErrorMessage = "Full Name cannot be over 280 characters")]
+        [MaxLength(200, ErrorMessage = "Full Name cannot be over 200 characters")]
         public string FullName { get; set; } = string.Empty;
         public string? Image { get; set; } = string.Empty;
         [Required]
         public DateTime BirthDate { get; set; }
         [Required]
         public string Nationality { get; set; } = string.Empty;
-        [MaxLength(280, ErrorMessage = "Full Name cannot be over 1000 characters")]
+        [MaxLength(1000, ErrorMessage = "Full Name cannot be over 1000 characters")]
         public string? Bio { get; set; } = string.Empty;
     }
 }

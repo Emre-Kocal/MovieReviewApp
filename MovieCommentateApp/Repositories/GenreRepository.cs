@@ -16,12 +16,16 @@ namespace MovieReviewApp.Repositories
 
         public async Task<List<Genre>> GetAllAsync()
         {
-            return await _context.Genres.ToListAsync();
+            return await _context.Genres.
+                Where(x=>x.Status)
+                .ToListAsync();
         }
 
         public async Task<Genre?> GetByIdAsync(int id)
         {
-            return await _context.Genres.FindAsync(id);
+            return await _context.Genres
+                .Where(x=>x.Status)
+                .FirstOrDefaultAsync(x=>x.Id==id);
         }
     }
 }
