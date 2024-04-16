@@ -44,6 +44,10 @@ namespace MovieReviewApp.Areas.Admin.Controllers
         public async Task<IActionResult> UserDetails(string id)
         {
             var user = await _userRepository.GetByIdAsync(id);
+            if (user == null)
+            {
+                return RedirectToAction("Error", "Error", new {area=""});
+            }
             return View(user);
         }
         [HttpPost]
@@ -52,7 +56,7 @@ namespace MovieReviewApp.Areas.Admin.Controllers
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == id);
             if (user == null)
             {
-                //return error
+                return RedirectToAction("Error", "Error", new { area = "" });
             }
             await _userManager.DeleteAsync(user);
             return RedirectToAction("Users", "User", new {area="Admin"});

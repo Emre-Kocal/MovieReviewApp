@@ -29,11 +29,12 @@ namespace MovieReviewApp.Controllers
         {
             ViewBag.Genres = await _genreRepo.GetAllAsync();
             var list=await _movieRepo.GetAllAsync(query);
+            //for save last query
             ViewBag.LastQuery = query;
             var user = await _userManager.GetUserAsync(HttpContext.User);
             if (user == null)
             {
-                //return error 
+                return RedirectToAction("Login","Account");
             }
             var roles = await _userManager.GetRolesAsync(user);
             ViewBag.userRole = roles[0];
@@ -45,13 +46,13 @@ namespace MovieReviewApp.Controllers
             var movie = await _movieRepo.GetByIdWithAllAsync(id);
             if (movie==null)
             {
-                //return Error
+                return RedirectToAction("Error", "Error");
             }
             ViewData["userId"] = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var user = await _userManager.GetUserAsync(HttpContext.User);
             if (user == null)
             {
-                //return error 
+                return RedirectToAction("Error", "Error");
             }
             var roles = await _userManager.GetRolesAsync(user);
             ViewBag.userRole = roles[0];

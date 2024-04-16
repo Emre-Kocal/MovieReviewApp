@@ -43,9 +43,8 @@ builder.Services.ConfigureApplicationCookie(options =>
     // Cookie settings
     options.Cookie.HttpOnly = true;
     options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-
+    options.AccessDeniedPath = "/Error/AccessDenied";
     options.LoginPath = "/Account/Login";
-    //options.AccessDeniedPath = "/Identity/Account/AccessDenied";
     options.SlidingExpiration = true;
 });
 
@@ -73,7 +72,6 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseRouting();
 app.UseAuthorization();
@@ -86,6 +84,30 @@ app.UseEndpoints(endpoints =>
     endpoints.MapControllerRoute(
         name: "default",
         pattern: "{controller=Account}/{action=Login}/{id?}");
+}); 
+
+app.UseStatusCodePages(context =>
+{
+    var response = context.HttpContext.Response;
+    var statusCode = response.StatusCode;
+
+    // Redirect to the appropriate error page based on the status code
+    string redirectPath;
+    if (statusCode == 404)
+    {
+        redirectPath = "/Error/NotFound";
+    }
+    else if (statusCode == 403)
+    {
+        redirectPath = "/Error/AccessDenied";
+    }
+    else
+    {
+        redirectPath = "/Error/Error";
+    }
+
+    response.Redirect(redirectPath);
+    return Task.CompletedTask;
 });
 app.UseStaticFiles();
 

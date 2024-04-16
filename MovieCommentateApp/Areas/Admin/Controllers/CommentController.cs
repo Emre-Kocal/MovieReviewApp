@@ -18,8 +18,12 @@ namespace MovieReviewApp.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> CommentDelete(int id)
         {
-            var userId = await _commentRepository.GetUsersIdAsync(id);
             await _commentRepository.Delete(id);
+            var userId = await _commentRepository.GetUsersIdAsync(id);
+            if (userId==null)
+            {
+                return RedirectToAction("Error", "Error", new { area = "" });
+            }
             return RedirectToAction("UserDetails", "User", new {area="Admin",id=userId});
         }
     }

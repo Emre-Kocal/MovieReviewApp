@@ -63,7 +63,7 @@ namespace MovieReviewApp.Areas.Admin.Controllers
 
             if (actor == null)
             {
-                //return error
+                return RedirectToAction("Error", "Error", new { area = "" });
             }
 
             return View(actor.ActorToUpdateActorDto());
@@ -77,6 +77,10 @@ namespace MovieReviewApp.Areas.Admin.Controllers
                 return View(actor);
             }
             var existingActor = await _actorRepository.GetByIdAsync(actor.Id);
+            if (existingActor == null)
+            {
+                return RedirectToAction("Error", "Error", new { area = "" });
+            }
             //saving existing image
             if (actor.Image.IsNullOrEmpty() && !existingActor.Image.IsNullOrEmpty())
             {
@@ -125,7 +129,7 @@ namespace MovieReviewApp.Areas.Admin.Controllers
             var model = await _actorRepository.DeleteAsync(id);
             if (model == null)
             {
-                //return error
+                return RedirectToAction("Error", "Error", new { area = "" });
             }
             if (!string.IsNullOrEmpty(model.Image))
             {

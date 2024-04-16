@@ -21,12 +21,12 @@ namespace MovieReviewApp.Controllers
             var actor=await _actorRepository.GetByIdAsync(id);
             if (actor==null)
             {
-                //return error
+                return RedirectToAction("Error", "Error");
             }
             var user = await _userManager.GetUserAsync(HttpContext.User);
             if (user == null)
             {
-                //return error 
+                return RedirectToAction("Error", "Error");
             }
             var roles = await _userManager.GetRolesAsync(user);
             ViewBag.userRole = roles[0];

@@ -33,7 +33,7 @@ namespace MovieReviewApp
                     new Genre { Name = "Mystery",Status=true }
                 };
             _context.Genres.AddRange(genres);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             var actors = new List<Actor>
                 {
@@ -49,7 +49,7 @@ namespace MovieReviewApp
                     new Actor { FullName = "Dwayne Johnson", BirthDate = new DateTime(1972, 5, 2), Nationality = "American", Bio = "Dwayne Johnson, also known as The Rock, is an actor and former professional wrestler known for his roles in movies like Jumanji and Fast & Furious.",Image="Dwayne_Johnson.jpg" }
                 };
             _context.Actors.AddRange(actors);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             var movies = new List<Movie>
             {
@@ -75,7 +75,7 @@ namespace MovieReviewApp
             };
 
             _context.Movies.AddRange(movies);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             var comments = new List<Comment>
                 {
@@ -106,7 +106,7 @@ namespace MovieReviewApp
                     new Comment { MovieId = movies.Single(m => m.Name == "The Godfather").Id, Text = "Classic masterpiece.", Rating = 5,Date=DateTime.Parse("2024-03-02") ,UserId= "8a445865-a24d-4543-a6c3-9443d048cdb9"}
                 };
             _context.Comments.AddRange(comments);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             Random rnd = new Random();
             var actorMovies = new List<ActorMovie>();
@@ -128,7 +128,7 @@ namespace MovieReviewApp
                 }
             }
             _context.ActorMovies.AddRange(actorMovies);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

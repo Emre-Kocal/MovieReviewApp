@@ -34,7 +34,11 @@ namespace MovieReviewApp.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> StatusChange(int id)
         {
-            await _genreRepository.StatusChangeAsync(id);
+            var model=await _genreRepository.StatusChangeAsync(id);
+            if (model==null)
+            {
+                return RedirectToAction("Error", "Error", new { area = "" });
+            }
             return RedirectToAction("Genres", "Genre", new { area = "Admin" });
         }
     }
