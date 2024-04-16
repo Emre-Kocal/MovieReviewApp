@@ -18,8 +18,18 @@ namespace MovieReviewApp.Controllers
         [HttpPost]
         public async Task<IActionResult> CommentAdd(CommentDto commentDto)
         {
-            await _commentRepository.CreateAsync(commentDto);
-            return RedirectToAction("MovieDetails", "Movie", new {id=commentDto.MovieId});
+            if (!ModelState.IsValid)
+            {
+                TempData["ModelStateErrors"] = ModelState.Values
+            .SelectMany(v => v.Errors)
+            .Select(e => e.ErrorMessage)
+            .ToList();
+            }
+            else
+            {
+                await _commentRepository.CreateAsync(commentDto);
+            }
+            return RedirectToAction("MovieDetails", "Movie", new { id = commentDto.MovieId });
         }
     }
 }

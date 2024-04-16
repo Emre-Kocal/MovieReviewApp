@@ -62,8 +62,8 @@
                         {
                             <form method="post" class="form-outline mb-4" asp-action="CommentAdd" asp-controller="Comment">
                                 <input type="text" class="form-control" placeholder="Type comment..." name="Text" />
-                                <select class="form-control my-4" name="Rating">
-                                    <option value="0">Rating</option>
+                                <select class="form-control my-4" name="Rating" required>
+                                    <option value="" selected disabled>Rating</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3</option>
@@ -72,7 +72,17 @@
                                 </select>
                                 <input type="hidden" name="UserId" value="@ViewData["userId"]" />
                                 <input type="hidden" name="MovieId" value="@Model.Id"/>
-                                <input type="submit" value="Send" class="btn btn-success"/>
+                                <input type="submit" value="Send" class="btn btn-success" />
+                                @if (TempData["ModelStateErrors"] != null)
+                                {
+                                    var errors = (string[])TempData["ModelStateErrors"];
+                                    <div class="alert alert-danger">
+                                        @for (int i = 0; i < errors.Length; i++)
+                                        {
+                                            <div>@errors[i]</div>
+                                        }
+                                    </div>
+                                }
                             </form>
                         }
                         @foreach (var comment in Model.Comments)

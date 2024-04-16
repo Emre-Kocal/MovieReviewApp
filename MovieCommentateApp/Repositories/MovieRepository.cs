@@ -56,6 +56,10 @@ namespace MovieReviewApp.Repositories
                     .Skip((query.PageNumber - 1) * query.PageSize)
                     .Take(query.PageSize);
             }
+            else
+            {
+                return new List<Movie>();
+            }
             return await list.ToListAsync();
         }
 

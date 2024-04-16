@@ -52,10 +52,22 @@
                         </div>
                         <div class="form-group col-md-4">
                             <label for="name">Page Size</label>
-                            <input value="@ViewBag.LastQuery.PageSize" type="text" class="form-control" name="PageSize">
+                            <input value="@ViewBag.LastQuery.PageSize" type="number" class="form-control" name="PageSize">
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary">Apply Filter</button>
+                    @if (ViewData.ModelState.ErrorCount > 0)
+                    {
+                        <div class="alert alert-danger mt-3" role="alert">
+                            @foreach (var modelState in ViewData.ModelState.Values)
+                            {
+                                foreach (var error in modelState.Errors)
+                                {
+                                    <div>@error.ErrorMessage</div>
+                                }
+                            }
+                        </div>
+                    }
                 </form>
             </div>
         </div>

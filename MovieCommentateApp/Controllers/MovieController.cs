@@ -6,6 +6,7 @@ using MovieReviewApp.Dtos.Movie;
 using MovieReviewApp.Interfaces;
 using MovieReviewApp.Models;
 using System.Security.Claims;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace MovieReviewApp.Controllers
 {
@@ -24,13 +25,15 @@ namespace MovieReviewApp.Controllers
             _signInManager = signInManager;
             _userManager = userManager;
         }
-
-        public async Task<IActionResult> Movies(QueryMovieDto query)
+        [HttpGet]
+        public async Task<IActionResult> Movies()
         {
             ViewBag.Genres = await _genreRepo.GetAllAsync();
-            var list=await _movieRepo.GetAllAsync(query);
-            //for save last query
+            var list=await _movieRepo.GetAllAsync();
+
+            var query = new QueryMovieDto();
             ViewBag.LastQuery = query;
+
             var user = await _userManager.GetUserAsync(HttpContext.User);
             if (user == null)
             {
@@ -38,6 +41,29 @@ namespace MovieReviewApp.Controllers
             }
             var roles = await _userManager.GetRolesAsync(user);
             ViewBag.userRole = roles[0];
+            return View(list);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Movies(QueryMovieDto query)
+        {
+            ViewBag.Genres = await _genreRepo.GetAllAsync();
+            //for save last query
+            ViewBag.LastQuery = query;
+
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            var roles = await _userManager.GetRolesAsync(user);
+            ViewBag.userRole = roles[0];
+
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            var list = await _movieRepo.GetAllAsync(query);
             return View(list);
         }
         [HttpGet]
