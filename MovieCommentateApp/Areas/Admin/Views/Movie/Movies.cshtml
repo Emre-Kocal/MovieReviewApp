@@ -1,0 +1,48 @@
+﻿@using MovieReviewApp.Models
+@model List<Movie>
+@{
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<div class="my-4">
+    <a href="@Url.Action("Add", "Movie", new { area = "Admin" })" class="btn btn-primary">Add New Movie</a>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Poster</th>
+            <th>Name</th>
+            <th>Comments Count</th>
+            <th>Update</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var movie in Model)
+        {
+            <tr>
+                <td>
+                    @if (string.IsNullOrEmpty(movie.PosterImage))
+                    {
+                        <img src="~/img/nophoto.png" alt="No Poster" style="width: 50px; height: 75px;">
+                    }
+                    else
+                    {
+                        <img src="~/img/Movie/@movie.PosterImage" alt="@movie.Name" style="width: 50px; height: 75px;">
+                    }
+                </td>
+                <td>@movie.Name</td>
+                <td>@movie.Comments.Count()</td>
+                <td>
+                    <a href="@Url.Action("Update", "Movie", new { area = "Admin", id = movie.Id })" class="btn btn-warning btn-sm">Update</a>
+                </td>
+                <td>
+                    <form method="post" action="@Url.Action("Delete", "Movie", new { area = "Admin", id = movie.Id })" onsubmit="return confirm('Are you sure you want to delete this movie?');">
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -17,23 +17,14 @@ namespace MovieReviewApp.Repositories
             _context = context;
         }
 
-        public async Task<Movie> CreateAsync(CreateMovieDto createMovieDto)
+        public async Task<List<Movie>> GetAllAsync()
         {
-            var model = createMovieDto.CreateDtoToMovie();
-            await _context.AddAsync(model);
-            await _context.SaveChangesAsync();
-            return model;
+            var list = await _context.Movies
+                .Include(x=>x.Genre)
+                .Where(x=>x.Genre.Status)
+                .ToListAsync();
+            return list;
         }
-
-        public async Task<Movie?> DeleteAsync(int id)
-        {
-            var model = await GetByIdAsync(id);
-            if (model == null)
-                return null;
-            _context.Remove(model);
-            return model;
-        }
-
         public async Task<List<Movie>> GetAllAsync(QueryMovieDto query)
         {
             var list = _context.Movies
@@ -62,24 +53,6 @@ namespace MovieReviewApp.Repositories
             }
             return await list.ToListAsync();
         }
-
-        public async Task<List<Movie>> GetAllAsync()
-        {
-            return await _context.Movies
-                .Include(x => x.Genre)
-                .Where(x => x.Genre.Status)
-                .ToListAsync();
-        }
-
-        public async Task<Movie?> GetByIdAsync(int id)
-        {
-            var model = await _context.Movies
-                .Include(x => x.Genre)
-                .Where(x => x.Genre.Status)
-                .FirstOrDefaultAsync(x => x.Id == id);
-            return model;
-        }
-
         public async Task<Movie?> GetByIdWithAllAsync(int id)
         {
             var model = await _context.Movies
@@ -90,21 +63,6 @@ namespace MovieReviewApp.Repositories
                 .ThenInclude(x => x.User)
                 .Where(x => x.Genre.Status)
                 .FirstOrDefaultAsync(x => x.Id == id);
-            return model;
-        }
-
-        public async Task<Movie?> UpdateAsync(int id, UpdateMovieDto updateMovieDto)
-        {
-            var model = await _context.Movies.FindAsync(id);
-            if (model == null)
-                return null;
-            model.Name = updateMovieDto.Name;
-            model.Description = updateMovieDto.Description;
-            model.Year = updateMovieDto.Year;
-            model.PosterImage = updateMovieDto.PosterImage;
-            model.GenreId = updateMovieDto.GenreId;
-
-            await _context.SaveChangesAsync();
             return model;
         }
     }

@@ -21,38 +21,32 @@
                 <form method="post" asp-controller="Movie" asp-action="Movies">
                     <div class="row mb-3">
                         <div class="form-group col-md-4">
-                            <label for="genreId">Genre ID</label>
+                            <label for="genreId">Genre</label>
                             <select class="form-control" name="GenreId">
                                 <option value="0">All Genres</option>
                                 @foreach (Genre genre in ViewBag.Genres)
                                 {
-                                    if (genre.Id==ViewBag.LastQuery.GenreId)
-                                    {
-                                        <option value="@genre.Id" selected>@genre.Name</option>
-                                    }else
-                                    {
-                                        <option value="@genre.Id">@genre.Name</option>
-                                    }
+                                    <option value="@genre.Id">@genre.Name</option>
                                 }
                             </select>
                         </div>
                         <div class="form-group col-md-4">
                             <label for="year">Year</label>
-                            <input value="@ViewBag.LastQuery.Year" type="number" class="form-control" name="Year">
+                            <input type="number" class="form-control" name="Year">
                         </div>
                         <div class="form-group col-md-4">
                             <label for="name">Movie Name</label>
-                            <input value="@ViewBag.LastQuery.Name" type="text" class="form-control" name="Name">
+                            <input type="text" class="form-control" name="Name">
                         </div>
                     </div>
                     <div class="row mb-3 justify-content-center">
                         <div class="form-group col-md-4">
                             <label for="year">Page Number</label>
-                            <input value="@ViewBag.LastQuery.PageNumber" type="number" class="form-control" name="PageNumber">
+                            <input type="number" class="form-control" name="PageNumber">
                         </div>
                         <div class="form-group col-md-4">
                             <label for="name">Page Size</label>
-                            <input value="@ViewBag.LastQuery.PageSize" type="number" class="form-control" name="PageSize">
+                            <input type="number" class="form-control" name="PageSize">
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary">Apply Filter</button>

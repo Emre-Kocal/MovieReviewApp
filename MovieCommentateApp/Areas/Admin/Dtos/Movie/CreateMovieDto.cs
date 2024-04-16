@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MovieReviewApp.Dtos.Movie
+namespace MovieReviewApp.Areas.Admin.Dtos.Movie
 {
-    public class UpdateMovieDto
+    public class CreateMovieDto
     {
         [Required]
         [MaxLength(100, ErrorMessage = "Max 100 character")]

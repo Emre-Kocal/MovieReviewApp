@@ -1,13 +1,13 @@
-﻿using MovieReviewApp.Dtos.Movie;
+﻿using MovieReviewApp.Areas.Admin.Dtos.Movie;
 using MovieReviewApp.Models;
 
-namespace MovieReviewApp.Mappers
+namespace MovieReviewApp.Areas.Admin.Mappers
 {
-    public static class MovieMappers
+    public static class MovieMapper
     {
-        public static MovieDto MovieToMovieDto(this Movie model)
+        public static Movie CreateDtoToMovie(this CreateMovieDto model)
         {
-            return new MovieDto
+            return new Movie
             {
                 Name = model.Name,
                 Description = model.Description,
