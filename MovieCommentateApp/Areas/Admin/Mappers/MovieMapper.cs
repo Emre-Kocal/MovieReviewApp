@@ -16,5 +16,17 @@ namespace MovieReviewApp.Areas.Admin.Mappers
                 GenreId = model.GenreId
             };
         }
+        public static UpdateMovieDto MovieToUpdateDto(this Movie model)
+        {
+            return new UpdateMovieDto
+            {
+                Id = model.Id,
+                Name = model.Name,
+                GenreId= model.GenreId,
+                Year = model.Year,
+                Description = model.Description,
+                PosterImage = model.PosterImage
+            };
+        }
     }
 }

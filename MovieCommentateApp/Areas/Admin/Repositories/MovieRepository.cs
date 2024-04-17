@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using MovieReviewApp.Areas.Admin.Dtos.Movie;
 using MovieReviewApp.Areas.Admin.Interfaces;
 using MovieReviewApp.Areas.Admin.Mappers;
@@ -10,10 +11,12 @@ namespace MovieReviewApp.Areas.Admin.Repositories
     public class MovieRepository : IMovieRepository
     {
         private readonly ApplicationDbContext _context;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public MovieRepository(ApplicationDbContext context)
+        public MovieRepository(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public async Task<Movie> CreateAsync(CreateMovieDto createMovieDto)
@@ -30,6 +33,9 @@ namespace MovieReviewApp.Areas.Admin.Repositories
             if (model == null)
                 return null;
             _context.Remove(model);
+            await _context.SaveChangesAsync();
+            if (model.PosterImage!=null)
+                ImageDelete(model.PosterImage);
             return model;
         }
 
@@ -59,6 +65,38 @@ namespace MovieReviewApp.Areas.Admin.Repositories
                 .ThenInclude(x => x.User)
                 .FirstOrDefaultAsync(x => x.Id == id);
             return model;
+        }
+
+        public string ImageAdd(IFormFile imageFile)
+        {
+            string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "img/Movie");
+            if (!Directory.Exists(uploadsFolder))
+            {
+                Directory.CreateDirectory(uploadsFolder);
+            }
+            string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
+            string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                imageFile.CopyTo(fileStream);
+            }
+            return uniqueFileName;
+        }
+
+        public void ImageDelete(string imagePath)
+        {
+            string oldFilePath = Path.Combine(_webHostEnvironment.WebRootPath, "img/Movie", imagePath);
+
+            if (System.IO.File.Exists(oldFilePath))
+                System.IO.File.Delete(oldFilePath);
+
+        }
+
+        public string ImageUpdate(IFormFile imageFile, string oldImagePath)
+        {
+            var newFileName = ImageAdd(imageFile);
+            ImageDelete(oldImagePath);
+            return newFileName;
         }
 
         public async Task<Movie?> UpdateAsync(UpdateMovieDto updateMovieDto)

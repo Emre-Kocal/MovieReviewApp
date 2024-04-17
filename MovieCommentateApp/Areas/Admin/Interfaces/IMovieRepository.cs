@@ -11,7 +11,8 @@ namespace MovieReviewApp.Areas.Admin.Interfaces
         public Task<Movie> CreateAsync(CreateMovieDto createMovieDto);
         public Task<Movie?> UpdateAsync(UpdateMovieDto updateMovieDto);
         public Task<Movie?> DeleteAsync(int id);
-        public Task<Movie?> ImageAdd(IFormFile imageFile);
-        public Task<Movie?> ImageDelete(IFormFile imageFile);
+        public string ImageAdd(IFormFile imageFile);
+        public string ImageUpdate(IFormFile imageFile , string oldImagePath);
+        public void ImageDelete(string imagePath);
     }
 }

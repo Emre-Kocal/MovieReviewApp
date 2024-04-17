@@ -1,8 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using MovieReviewApp.Areas.Admin.Dtos.Movie;
 using MovieReviewApp.Areas.Admin.Interfaces;
+using MovieReviewApp.Areas.Admin.Mappers;
 using MovieReviewApp.Interfaces;
+using MovieReviewApp.Models;
+using NuGet.Versioning;
 
 namespace MovieReviewApp.Areas.Admin.Controllers
 {
@@ -21,51 +25,79 @@ namespace MovieReviewApp.Areas.Admin.Controllers
 
         public async Task<IActionResult> Movies()
         {
-            var list=await _movieRepository.GetAllAsync();
+            var list = await _movieRepository.GetAllAsync();
             return View(list);
         }
         [HttpGet]
         public async Task<IActionResult> Add()
         {
-            ViewBag.Genres=await _genreRepository.GetAllAsync();
+            ViewBag.Genres = await _genreRepository.GetAllAsync();
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Add(CreateMovieDto createMovieDto)
+        public async Task<IActionResult> Add(CreateMovieDto createMovieDto, IFormFile? formFile)
         {
             if (!ModelState.IsValid)
-                return RedirectToAction("Movies", "Movie", new { area = "Admin" });
+            {
+                ViewBag.Genres = await _genreRepository.GetAllAsync();
+                return View();
+            }
 
+            string newMovieFile = _movieRepository.ImageAdd(formFile);
+            createMovieDto.PosterImage = newMovieFile;
             await _movieRepository.CreateAsync(createMovieDto);
-            return View();
+            return RedirectToAction("Movies", "Movie", new { area = "Admin" });
+
         }
         [HttpGet]
         public async Task<IActionResult> Update(int id)
         {
-            var model=await _movieRepository.GetByIdAsync(id);
-            return View(model);
+            var model = await _movieRepository.GetByIdAsync(id);
+            ViewBag.Genres = await _genreRepository.GetAllAsync();
+            if (model==null)
+                return RedirectToAction("Error", "Error", new { area = "" });
+            return View(model.MovieToUpdateDto());
         }
         [HttpPost]
-        public async Task<IActionResult> Update(UpdateMovieDto updateMovieDto)
+        public async Task<IActionResult> Update(UpdateMovieDto updateMovieDto,IFormFile? formFile)
         {
             if (!ModelState.IsValid)
-                return RedirectToAction("Movies", "Movie", new { area = "Admin" });
-
-            var model=await _movieRepository.UpdateAsync(updateMovieDto);
-            if (model==null)
             {
-                //return error
+                ViewBag.Genres = await _genreRepository.GetAllAsync();
+                return View(updateMovieDto);
             }
-            return RedirectToAction("Movies", "Movie", new {area="Admin"});
+
+            var oldmodel = await _movieRepository.GetByIdAsync(updateMovieDto.Id);
+
+            if (oldmodel == null)
+                return RedirectToAction("Error", "Error", new { area = "" });
+
+            string newMovieFile="";
+            if (formFile != null && oldmodel.PosterImage!=null)
+            {
+                newMovieFile = _movieRepository.ImageUpdate(formFile, oldmodel.PosterImage);
+            }
+            else if (formFile != null)
+            {
+                newMovieFile = _movieRepository.ImageAdd(formFile);
+            }
+            else if (oldmodel.PosterImage!=null)
+            {
+                newMovieFile=oldmodel.PosterImage;
+            }
+
+            updateMovieDto.PosterImage= newMovieFile;
+            await _movieRepository.UpdateAsync(updateMovieDto);
+
+            return RedirectToAction("Movies", "Movie", new { area = "Admin" });
         }
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
-            var model=await _movieRepository.DeleteAsync(id);
+            var model = await _movieRepository.DeleteAsync(id);
             if (model == null)
-            {
-                //return error
-            }
+                return RedirectToAction("Error", "Error", new { area = "" });
+
             return RedirectToAction("Movies", "Movie", new { area = "Admin" });
         }
     }
