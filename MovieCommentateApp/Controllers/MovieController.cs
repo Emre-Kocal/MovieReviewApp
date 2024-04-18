@@ -58,12 +58,14 @@ namespace MovieReviewApp.Controllers
             var roles = await _userManager.GetRolesAsync(user);
             ViewBag.userRole = roles[0];
 
+            List<Movie> list;
             if (!ModelState.IsValid)
             {
-                return View();
+                list = new List<Movie>();
+                return View(list);
             }
 
-            var list = await _movieRepo.GetAllAsync(query);
+            list = await _movieRepo.GetAllAsync(query);
             return View(list);
         }
         [HttpGet]
