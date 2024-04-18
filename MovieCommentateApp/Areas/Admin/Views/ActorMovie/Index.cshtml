@@ -1,0 +1,65 @@
+﻿@using MovieReviewApp.Models
+@model List<Actor>
+@{
+    ViewData["Title"] = "Add New Actor to a Movie";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+<h2 class="text-center">@ViewBag.Movie.Name</h2>
+<h3>Actors in the Movie</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Birth Date</th>
+            <th>Nationality</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var actor in Model)
+        {
+            <tr>
+                <td>@actor.FullName</td>
+                <td>@actor.BirthDate.ToString("d")</td>
+                <td>@actor.Nationality</td>
+                <td>
+                    <form action="@Url.Action("Delete", "ActorMovie")" method="post">
+                        <input type="hidden" name="ActorId" value="@actor.Id" />
+                        <input type="hidden" name="MovieId" value="@ViewBag.Movie.Id" />
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h3>Actors you can add to this movie</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Birth Date</th>
+            <th>Nationality</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Actor actor in ViewBag.Actors)
+        {
+            <tr data-actor-id="@actor.Id">
+                <td>@actor.FullName</td>
+                <td>@actor.BirthDate.ToString("d")</td>
+                <td>@actor.Nationality</td>
+                <td>
+                    <form action="@Url.Action("Add", "ActorMovie",new{area="Admin"})" method="post">
+                        <input type="hidden" name="ActorId" value="@actor.Id" />
+                        <input type="hidden" name="MovieId" value="@ViewBag.Movie.Id" />
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

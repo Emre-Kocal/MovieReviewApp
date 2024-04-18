@@ -29,6 +29,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
     options.Password.RequiredLength = 8;
 }).AddEntityFrameworkStores<ApplicationDbContext>();
 
+builder.Services.AddScoped<IActorMovieRepository, ActorMovieRepository>();
 builder.Services.AddScoped<IUserRepository,UserRepository>();
 builder.Services.AddScoped<MovieReviewApp.Areas.Admin.Interfaces.IMovieRepository, MovieReviewApp.Areas.Admin.Repositories.MovieRepository>();
 builder.Services.AddScoped<MovieReviewApp.Interfaces.IMovieRepository, MovieReviewApp.Repositories.MovieRepository>();

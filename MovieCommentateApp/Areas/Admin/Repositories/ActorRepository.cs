@@ -5,6 +5,7 @@ using MovieReviewApp.Data;
 using MovieReviewApp.Dtos.Movie;
 using MovieReviewApp.Mappers;
 using MovieReviewApp.Models;
+using System.Linq;
 
 namespace MovieReviewApp.Areas.Admin.Repositories
 {
@@ -40,6 +41,21 @@ namespace MovieReviewApp.Areas.Admin.Repositories
             return await _context.Actors.ToListAsync();
         }
 
+        public async Task<List<Actor>> GetAllAsyncExceptFor(int movieId)
+        {
+            var actorList = await _context
+                .Actors
+                .Include(x=>x.Movies)
+                .ToListAsync();
+
+            var filteredActors = actorList
+                .Where(actor => actor.Movies
+                .All(movie => movie.MovieId != movieId))
+                .ToList();
+
+            return filteredActors;
+        }
+
         public async Task<Actor?> GetByIdAsync(int id)
         {
             var model = await _context.Actors.FindAsync(id);
@@ -49,9 +65,9 @@ namespace MovieReviewApp.Areas.Admin.Repositories
         public async Task<Actor?> GetByIdWithAllAsync(int id)
         {
             var model = await _context.Actors
-                .Include(x=>x.Movies)
-                .ThenInclude(x=>x.Movie)
-                .FirstOrDefaultAsync(x=>x.Id==id);
+                .Include(x => x.Movies)
+                .ThenInclude(x => x.Movie)
+                .FirstOrDefaultAsync(x => x.Id == id);
             return model;
         }
 

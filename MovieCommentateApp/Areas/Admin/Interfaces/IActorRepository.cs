@@ -7,6 +7,7 @@ namespace MovieReviewApp.Areas.Admin.Interfaces
     public interface IActorRepository
     {
         public Task<List<Actor>> GetAllAsync();
+        public Task<List<Actor>> GetAllAsyncExceptFor(int movieId);
         public Task<Actor?> GetByIdAsync(int id);
         public Task<Actor?> GetByIdWithAllAsync(int id);
         public Task<Actor> CreateAsync(CreateActorDto createActorDto);

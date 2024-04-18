@@ -36,7 +36,7 @@
                 <td>@movie.Name</td>
                 <td>@movie.Comments.Count()</td>
                 <td>
-                    <a href="@Url.Action("ActorMovie", "Movie", new { area = "Admin", id = movie.Id })" class="btn btn-warning btn-sm">Actors</a>
+                    <a href="@Url.Action("Index", "ActorMovie", new { area = "Admin", movieId = movie.Id })" class="btn btn-warning btn-sm">Actors</a>
                 </td>
                 <td>
                     <a href="@Url.Action("Update", "Movie", new { area = "Admin", id = movie.Id })" class="btn btn-warning btn-sm">Update</a>
